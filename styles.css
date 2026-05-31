@@ -112,7 +112,7 @@ a { color: inherit; text-decoration: none; }
 }
 .hero__portrait img {
   width: 100%; height: 100%; object-fit: cover; object-position: 44% 22%;
-  filter: grayscale(1) contrast(1.02) brightness(.8);
+  filter: saturate(.55) contrast(1.08) brightness(.58);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 70%, transparent 100%);
           mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 70%, transparent 100%);
 }
