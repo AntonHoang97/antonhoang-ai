@@ -144,5 +144,44 @@ if (reduce) {
   reveals.forEach(el => io.observe(el));
 }
 
+/* ---------- Timeline coursework: accessible accordion (one open at a time) ---------- */
+const cwTriggers = document.querySelectorAll(".timeline__trigger");
+
+function closePanel(btn) {
+  const panel = document.getElementById(btn.getAttribute("aria-controls"));
+  btn.setAttribute("aria-expanded", "false");
+  btn.closest(".timeline__item")?.classList.remove("is-open");
+  if (panel) { panel.classList.remove("is-open"); panel.style.maxHeight = "0px"; }
+}
+
+function openPanel(btn) {
+  const panel = document.getElementById(btn.getAttribute("aria-controls"));
+  if (!panel) return;
+  btn.setAttribute("aria-expanded", "true");
+  btn.closest(".timeline__item")?.classList.add("is-open");
+  panel.classList.add("is-open");
+  panel.style.maxHeight = panel.scrollHeight + "px";
+}
+
+cwTriggers.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const isOpen = btn.getAttribute("aria-expanded") === "true";
+    cwTriggers.forEach(closePanel);
+    if (!isOpen) openPanel(btn);
+  });
+});
+
+/* keep an open panel sized correctly on resize (chip wrapping changes height) */
+let cwResizeTimer;
+window.addEventListener("resize", () => {
+  clearTimeout(cwResizeTimer);
+  cwResizeTimer = setTimeout(() => {
+    document.querySelectorAll(".timeline__trigger[aria-expanded='true']").forEach(btn => {
+      const panel = document.getElementById(btn.getAttribute("aria-controls"));
+      if (panel) panel.style.maxHeight = panel.scrollHeight + "px";
+    });
+  }, 150);
+});
+
 /* ---------- Year ---------- */
 document.getElementById("year").textContent = new Date().getFullYear();

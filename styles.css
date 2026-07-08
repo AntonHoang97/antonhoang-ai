@@ -72,6 +72,7 @@ a { color: inherit; text-decoration: none; }
   .marquee__track, .hero__marquee-track{ animation: none !important; }
   .pill{ animation: none !important; }
   .hero__scroll span{ animation: none !important; }
+  .coursework, .timeline__toggle i{ transition: none !important; }
   html{ scroll-behavior: auto; }
 }
 
@@ -209,6 +210,28 @@ a { color: inherit; text-decoration: none; }
 .timeline__title { font-size: .95rem; color: var(--ink); line-height: 1.35; font-weight: 500; transition: var(--t2); }
 .timeline__org { font-size: .85rem; color: var(--muted); line-height: 1.4; margin-top: .15rem; }
 .timeline__item:hover .timeline__title { color: #fff; }
+
+/* expandable timeline item (coursework) */
+.timeline__trigger { display: block; width: 100%; text-align: left; background: none; border: 0; padding: 0; margin: 0; font: inherit; color: inherit; cursor: pointer; }
+.timeline__trigger .timeline__title { margin-top: .15rem; }
+.timeline__trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 4px; }
+.timeline__toggle { display: inline-flex; align-items: center; gap: .45rem; margin-top: .65rem; font-family: var(--mono); font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); transition: color var(--t2); }
+.timeline__trigger:hover .timeline__toggle { color: var(--accent); }
+.timeline__toggle i { font-style: normal; display: inline-flex; width: 15px; height: 15px; align-items: center; justify-content: center; border: 1px solid currentColor; border-radius: 50%; font-size: .72rem; line-height: 1; transition: transform var(--t2); }
+.timeline__trigger[aria-expanded="true"] .timeline__toggle i { transform: rotate(45deg); }
+.timeline__item--expandable.is-open::before { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-dim); }
+
+/* coursework panel — full-width below the two columns, animated open via max-height */
+.coursework { grid-column: 1 / -1; overflow: hidden; max-height: 0; opacity: 0; transition: max-height .5s var(--t), opacity .4s var(--t), margin-top .4s var(--t); }
+.coursework.is-open { opacity: 1; margin-top: .5rem; }
+.coursework__inner { min-height: 0; }
+.coursework__pad { padding: 2rem 0 .25rem; border-top: 1px solid var(--line); }
+.coursework__intro { max-width: 60ch; color: var(--muted); font-size: .95rem; margin-bottom: 1.8rem; }
+.cw-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.7rem 2.2rem; }
+.cw-group h4 { font-family: var(--mono); font-size: .64rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: .85rem; }
+.cw-chips { list-style: none; display: flex; flex-wrap: wrap; gap: .4rem; }
+.cw-chips li { font-size: .74rem; color: var(--ink-2); border: 1px solid var(--line); border-radius: 100px; padding: .28rem .68rem; transition: border-color var(--t2), color var(--t2); }
+.cw-chips li:hover { border-color: var(--accent-2); color: var(--ink); }
 
 /* ====================== RESEARCH ROWS ====================== */
 .rows { border-top: 1px solid var(--line); }

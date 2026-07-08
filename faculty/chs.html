@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CHS · IHS Publication Tracking — VinUni</title>
+  <meta name="description" content="VinUni College of Health Sciences and Innovation in Health Sciences publication tracking by academic year: output, citations, quartiles, SDGs and collaboration." />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#07090b;--bg-2:#0d1115;--bg-3:#11161b;--ink:#f3f5f6;--ink-2:#c5ccd2;--muted:#8a949d;--faint:#565f68;
+      --line:rgba(255,255,255,.10);--line-2:rgba(255,255,255,.16);--accent:#5fc4d4;--accent-2:#2f93a3;--accent-dim:rgba(95,196,212,.12);
+      --q1:#5fc4d4;--q2:#83d2dc;--q3:#a6e0e7;--q4:#cdeef2;
+      --display:"Outfit",sans-serif;--sans:"Inter",sans-serif;--mono:"JetBrains Mono",monospace;--pad:clamp(1rem,3vw,2.4rem)}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    .mono{font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;font-size:.62rem}
+    .nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:.8rem var(--pad);background:rgba(7,9,11,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    .nav .brand{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase}
+    .toggle{display:flex;border:1px solid var(--line-2);border-radius:999px;overflow:hidden}
+    .toggle a{padding:.5rem 1rem;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+    .toggle a.on{background:var(--accent);color:#06222a;font-weight:600}
+    .head{padding:clamp(1.2rem,3vw,1.8rem) var(--pad) .3rem}
+    .head .tag{display:inline-block;color:var(--accent);border:1px solid var(--accent-2);padding:.3rem .7rem;border-radius:999px;margin-bottom:.7rem}
+    .head h1{font-family:var(--display);font-weight:200;letter-spacing:-.02em;font-size:clamp(1.7rem,4vw,2.6rem)}
+    .head h1 b{font-weight:500;color:var(--accent)}
+    .head p{color:var(--muted);max-width:78ch;margin-top:.5rem;font-size:.85rem}
+    .wrap{padding:1rem var(--pad) 3rem;display:flex;flex-direction:column;gap:1.1rem}
+    #err{color:#ff9b9b;font-family:var(--mono);font-size:.7rem;display:none}
+
+    /* AY switcher hero */
+    .ayhero{background:linear-gradient(135deg,#0e1a22,#0b1116);border:1px solid var(--line-2);border-radius:16px;padding:1.1rem 1.2rem}
+    .ayhero .lab{color:var(--accent);margin-bottom:.7rem}
+    .aybars{display:flex;gap:.55rem;align-items:flex-end;overflow-x:auto;padding:22px 0 .3rem}
+    .aybar{flex:1;min-width:64px;cursor:pointer;text-align:center;border:none;background:none;padding:0}
+    .aybar .bar{height:96px;display:flex;align-items:flex-end;justify-content:center}
+    .aybar .fill{width:70%;background:linear-gradient(180deg,var(--accent-2),#1d5561);border-radius:6px 6px 0 0;transition:.25s;position:relative;min-height:4px}
+    .aybar .fill b{position:absolute;top:-16px;left:0;right:0;font-family:var(--mono);font-size:.62rem;color:var(--ink-2)}
+    .aybar .yr{margin-top:.5rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.05em;color:var(--muted)}
+    .aybar.on .fill{background:linear-gradient(180deg,#8fe6f2,var(--accent));box-shadow:0 0 18px rgba(95,196,212,.5)}
+    .aybar.on .fill b{color:var(--accent);font-weight:600}
+    .aybar.on .yr{color:#fff}
+    .aybar.allb .fill{background:linear-gradient(180deg,#5a6570,#2a3138)}
+    .aybar.allb.on .fill{background:linear-gradient(180deg,#8fe6f2,var(--accent))}
+
+    .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem}
+    .kpi{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem}
+    .kpi .n{font-family:var(--display);font-weight:300;font-size:1.9rem;line-height:1}
+    .kpi.acc .n{color:var(--accent)}
+    .kpi .l{color:var(--muted);font-size:.6rem;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;margin-top:.35rem}
+    .kpi .s{color:var(--faint);font-size:.7rem;margin-top:.15rem}
+
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.1rem}
+    .box{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem}
+    .box h3{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.9rem}
+    .chartwrap{position:relative;height:240px}
+    .chartwrap.tall{height:330px}
+    .donutwrap{display:flex;align-items:center;gap:1.2rem}
+    .donut{width:120px;height:120px;border-radius:50%;flex:none;position:relative}
+    .donut::after{content:"";position:absolute;inset:26px;background:var(--bg-2);border-radius:50%}
+    .donut .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2}
+    .donut .mid b{font-family:var(--display);font-size:1.3rem;color:var(--accent)}
+    .donut .mid span{font-size:.55rem;color:var(--muted);font-family:var(--mono)}
+    .qleg{display:flex;flex-direction:column;gap:.4rem;font-size:.8rem;color:var(--ink-2)}
+    .qleg .d{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:.4rem}
+    .qleg .v{font-family:var(--mono);color:var(--muted);margin-left:.3rem}
+    .bars .b{display:flex;align-items:center;gap:.5rem;margin:.32rem 0;font-size:.76rem}
+    .bars .b .lab{width:120px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .bars .b .track{flex:1;height:10px;background:rgba(255,255,255,.07);border-radius:5px;overflow:hidden}
+    .bars .b .fill{height:100%;min-width:4px;border-radius:5px;background:linear-gradient(90deg,#2f93a3,#7fdcea)}
+    .bars.sdg .b .fill{background:linear-gradient(90deg,#3f7d55,#7ee0b0)}
+    .bars .b .v{width:34px;text-align:right;font-family:var(--mono);color:var(--accent);font-size:.7rem}
+    .lst .row{display:flex;justify-content:space-between;gap:.6rem;padding:.32rem 0;border-bottom:1px solid var(--line);font-size:.8rem}
+    .lst .row .nm{display:flex;align-items:center;gap:.5rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .lst .row img{width:15px;height:15px;border-radius:50%;flex:none}
+    .lst .row .v{font-family:var(--mono);color:var(--accent);white-space:nowrap}
+    .box .lst,.box .bars{max-height:236px;overflow:auto;padding-right:.2rem}
+    .box .lst::-webkit-scrollbar,.box .bars::-webkit-scrollbar{width:6px}
+    .box .lst::-webkit-scrollbar-thumb,.box .bars::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:3px}
+
+    .tables{display:grid;grid-template-columns:minmax(360px,1fr) 1.45fr;gap:1.1rem}
+    @media(max-width:1000px){.tables{grid-template-columns:1fr}}
+    .rankcard{background:linear-gradient(160deg,rgba(95,196,212,.12),var(--bg-2) 55%);border:1px solid var(--accent-2);border-radius:14px;box-shadow:0 0 0 1px rgba(95,196,212,.14),0 10px 34px rgba(95,196,212,.10);overflow:hidden;display:flex;flex-direction:column}
+    .rhead{padding:.85rem 1rem;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap}
+    .rtitle{font-family:var(--display);font-weight:300;font-size:1.15rem;color:var(--ink)}
+    .filters{display:flex;gap:.5rem}
+    .filters select{background:var(--bg-3);color:var(--ink);border:1px solid var(--line-2);border-radius:8px;padding:.4rem .5rem;font-family:var(--sans);font-size:.76rem;max-width:140px}
+    .rwrap{overflow:auto;max-height:72vh}
+    table.rt{width:100%;border-collapse:collapse;font-size:.83rem}
+    table.rt th{position:sticky;top:0;background:var(--bg-3);color:var(--ink-2);font-family:var(--mono);font-size:.55rem;letter-spacing:.06em;text-transform:uppercase;text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line);z-index:2}
+    table.rt td{padding:.55rem .55rem;border-bottom:1px solid var(--line)}
+    table.rt td.col-rk{color:var(--faint);font-family:var(--mono)}
+    table.rt td.np{font-family:var(--mono);color:var(--accent);text-align:right;font-size:.95rem;font-weight:500}
+    table.rt td.nm{font-weight:500;color:var(--ink)}
+    table.rt td.dp,table.rt td.rl{color:var(--muted);font-size:.74rem}
+    .col-np{width:56px;text-align:right}.col-dp{width:112px}.col-rl{width:132px}.col-rk{width:36px}
+    table.rt tbody tr{cursor:pointer}
+    table.rt tbody tr:hover td{background:rgba(95,196,212,.07)}
+    table.rt tbody tr.psel td{background:rgba(95,196,212,.18)!important}
+    table.rt tbody tr.psel td.nm{color:#fff}
+    .clrsel{margin-left:.5rem;font-family:var(--mono);font-size:.55rem;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);background:transparent;border:1px solid var(--accent-2);border-radius:999px;padding:.2rem .5rem;cursor:pointer}
+    .clrsel:hover{background:var(--accent);color:#06222a}
+    .pubs{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+    .pubs .head2{padding:.85rem 1rem;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+    .pubs .head2 h3{font-family:var(--display);font-weight:300;font-size:1.15rem}
+    .pubs input{background:var(--bg-3);color:var(--ink);border:1px solid var(--line-2);border-radius:8px;padding:.45rem .6rem;font-family:var(--sans);min-width:200px}
+    .pwrap{overflow:auto;max-height:72vh}
+    table.pt{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.8rem}
+    table.pt th{position:sticky;top:0;background:var(--bg-3);color:var(--ink-2);font-family:var(--mono);font-size:.55rem;letter-spacing:.06em;text-transform:uppercase;text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line);z-index:2}
+    table.pt td{padding:.6rem .55rem;border-bottom:1px solid var(--line);vertical-align:top}
+    table.pt td.t{white-space:normal;line-height:1.3}
+    table.pt td.t .jr{color:var(--muted);font-size:.72rem;margin-top:.15rem;display:flex;align-items:center;gap:.35rem}
+    table.pt td.t .jr img{width:14px;height:14px;border-radius:50%;flex:none}
+    table.pt td.c{text-align:center;font-family:var(--mono);white-space:nowrap}
+    table.pt td.c.cit{color:var(--accent)}
+    .col-t{width:auto}.col-cit{width:60px}.col-q{width:50px}.col-ty{width:92px}.col-sdg{width:74px}.col-au{width:56px}.col-lk{width:40px}
+    .qb{display:inline-block;font-family:var(--mono);font-size:.58rem;padding:.1rem .34rem;border-radius:4px;border:1px solid var(--line-2);color:var(--muted)}
+    .qb{border:none!important;font-weight:600}
+    .qb.Q1{background:rgba(95,196,212,.95);color:#052027}
+    .qb.Q2{background:rgba(95,196,212,.58);color:#06222a}
+    .qb.Q3{background:rgba(95,196,212,.30);color:#e2f5f9}
+    .qb.Q4{background:rgba(95,196,212,.15);color:#a6cbd2}
+    .sdgb{font-family:var(--mono);font-size:.58rem;color:var(--q1)}
+    .lk{color:var(--accent-2)}.lk:hover{color:var(--accent)}
+
+    .note{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;background:var(--bg-2);border:1px solid var(--line);border-left:3px solid var(--accent-2);border-radius:12px;padding:.9rem 1.1rem}
+    .note p{color:var(--ink-2);font-size:.82rem;max-width:74ch}
+    .note b{color:var(--ink)}
+    .note .askbtn{flex:none;font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:#06222a;background:var(--accent);border-radius:999px;padding:.55rem .95rem;font-weight:600}
+    .note .askbtn:hover{filter:brightness(1.08)}
+    .empty{color:var(--faint);padding:2rem;text-align:center}
+    @media(max-width:640px){.aybar .bar{height:70px}}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="brand" href="../index.html">Nguyen Viet Hoang</a>
+    <div class="toggle"><a href="./index.html">Individual</a><a href="./chs.html" class="on">CHS · IHS</a></div>
+  </nav>
+
+  <div class="head">
+    <span class="tag mono">CHS · IHS Research Intelligence</span>
+    <h1>Publication <b>Tracking</b></h1>
+    <p>Aggregate research output for the College of Health Sciences (CHS) and Innovation in Health Sciences (IHS), by academic year. Pick a year to update every metric below.</p>
+    <div id="err"></div>
+  </div>
+
+  <div class="wrap">
+    <div class="ayhero">
+      <div class="lab mono">Select academic year · publications per year</div>
+      <div class="aybars" id="aybars"></div>
+    </div>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="tables">
+      <div class="rankcard">
+        <div class="rhead">
+          <div><div class="mono" style="color:var(--accent)">Author ranking</div><div class="rtitle" id="rankh">Publications per person</div></div>
+          <div class="filters">
+            <select id="fdept"><option value="">All departments</option></select>
+            <select id="frole"><option value="">All roles</option></select>
+          </div>
+        </div>
+        <div class="rwrap"><table class="rt"><thead><tr>
+          <th class="col-rk">#</th><th>Name</th><th class="col-np">Pubs</th><th class="col-dp">Dept</th><th class="col-rl">Role</th>
+        </tr></thead><tbody id="rtb"></tbody></table></div>
+      </div>
+      <div class="pubs">
+        <div class="head2"><h3 id="pubh">Publications</h3><input id="pq" placeholder="Filter titles…"></div>
+        <div class="pwrap"><table class="pt"><thead><tr>
+          <th class="col-t">Title</th><th class="col-cit">Cited</th><th class="col-q">SJR</th><th class="col-ty">Type</th><th class="col-sdg">SDG</th><th class="col-au">Authors</th><th class="col-lk"></th>
+        </tr></thead><tbody id="ptb"></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="box"><h3>Journal quartiles (SJR)</h3><div class="chartwrap"><canvas id="cQuart"></canvas></div></div>
+      <div class="box"><h3>Contribution by SDG</h3><div class="chartwrap tall"><canvas id="cSdg"></canvas></div></div>
+      <div class="box"><h3>Publications by role</h3><div class="chartwrap"><canvas id="cRole"></canvas></div></div>
+      <div class="box"><h3>Publications by department</h3><div class="chartwrap"><canvas id="cDept"></canvas></div></div>
+      <div class="box"><h3>Top partner institutions</h3><div class="lst" id="afflist"></div></div>
+      <div class="box"><h3>Top partner countries</h3><div class="lst" id="ctrylist"></div></div>
+    </div>
+
+    <div class="note">
+      <p><b>Note.</b> These figures support internal CHS and IHS tracking only. They are not intended for, and should not be read as, QS100 or other ranking metrics. For any question about QS100 methodology or figures, please email <a href="mailto:research@vinuni.edu.vn?subject=QS100%20metric%20enquiry%20(CHS%2FIHS%20dashboard)" style="color:var(--accent)">research@vinuni.edu.vn</a>.</p>
+      <a class="askbtn" href="mailto:research@vinuni.edu.vn?subject=QS100%20metric%20enquiry%20(CHS%2FIHS%20dashboard)&body=Hi%20Research%20Office%2C%0A%0AI%20have%20a%20question%20about%20QS100%20metrics%20shown%20on%20the%20CHS%2FIHS%20dashboard%3A%0A%0A">Ask about QS100 →</a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script>
+  const $=s=>document.querySelector(s), nf=n=>(n==null?"—":Number(n).toLocaleString("en-US"));
+  const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const QC={Q1:"#5fc4d4",Q2:"#83d2dc",Q3:"#a6e0e7",Q4:"#cdeef2"};
+  const flag=pc=>pc?`<img src="https://hatscripts.github.io/circle-flags/flags/${pc.toLowerCase()}.svg" loading="lazy" onerror="this.style.display='none'">`:"";
+  let DATA=null, cur="all", curD=null, selPerson=null, curLabel="", CNAME={};
+  // minimal iso2 -> name for country list
+  const RN=new Intl.DisplayNames(["en"],{type:"region"});
+  const cname=iso=>{try{return RN.of(iso)||iso;}catch(e){return iso;}};
+
+  async function load(){
+    try{DATA=await fetch("./data/chs.json",{cache:"no-store"}).then(r=>r.json());}
+    catch(e){$("#err").textContent="Could not load ./data/chs.json";$("#err").style.display="block";return;}
+    $("#fdept").innerHTML='<option value="">All departments</option>'+(DATA.depts||[]).map(d=>`<option>${esc(d)}</option>`).join("");
+    $("#frole").innerHTML='<option value="">All roles</option>'+(DATA.roles||[]).map(r=>`<option>${esc(r)}</option>`).join("");
+    $("#fdept").onchange=()=>renderPeople(); $("#frole").onchange=()=>renderPeople();
+    buildAY(); select(DATA.ay_list[DATA.ay_list.length-1]);
+  }
+
+  function renderPeople(){
+    if(!curD)return;
+    const fd=$("#fdept").value, fr=$("#frole").value;
+    let ppl=(curD.people||[]).filter(p=>(!fd||p.dept===fd)&&(!fr||p.role===fr));
+    $("#rankh").textContent=`Publications per person (${ppl.length})`;
+    $("#rtb").innerHTML=ppl.map((p,i)=>`<tr data-name="${esc(p.name)}" class="${selPerson===p.name?'psel':''}"><td class="col-rk">${i+1}</td><td class="nm">${esc(p.name)}</td><td class="np">${p.pubs}</td><td class="dp">${esc(p.dept)}</td><td class="rl">${esc(p.role)}</td></tr>`).join("")||'<tr><td colspan="5" class="empty">No people match.</td></tr>';
+    $("#rtb").querySelectorAll("tr[data-name]").forEach(tr=>tr.addEventListener("click",()=>{const nm=tr.dataset.name;selPerson=(selPerson===nm?null:nm);renderPeople();updatePubs();}));
+  }
+
+  function buildAY(){
+    const pl=DATA.pipeline, mx=Math.max(...pl.map(p=>p.pubs));
+    let h=pl.map(p=>`<button class="aybar" data-ay="${p.ay}"><div class="bar"><div class="fill" style="height:${8+92*p.pubs/mx}%"><b>${p.pubs}</b></div></div><div class="yr">${p.ay.replace("AY","")}</div></button>`).join("");
+    h+=`<button class="aybar allb" data-ay="all"><div class="bar"><div class="fill" style="height:100%"><b>${DATA.all.pubs}</b></div></div><div class="yr">ALL</div></button>`;
+    $("#aybars").innerHTML=h;
+    $("#aybars").querySelectorAll(".aybar").forEach(b=>b.addEventListener("click",()=>select(b.dataset.ay)));
+  }
+
+  function bars(obj,cls,limit){
+    let ent=Object.entries(obj).filter(([k])=>k&&k!=="nan"&&k!=="None"); if(limit)ent=ent.slice(0,limit);
+    if(!ent.length)return'<div class="empty">No data</div>';
+    const mx=Math.max(...ent.map(e=>e[1]));
+    return`<div class="bars ${cls||''}">`+ent.map(([k,v])=>`<div class="b"><span class="lab" title="${esc(k)}">${esc(k)}</span><span class="track"><span class="fill" style="width:${100*v/mx}%"></span></span><span class="v">${v}</span></div>`).join("")+`</div>`;
+  }
+
+  function select(ay){
+    cur=ay;
+    $("#aybars").querySelectorAll(".aybar").forEach(b=>b.classList.toggle("on",b.dataset.ay===ay));
+    const d= ay==="all"?DATA.all:DATA.by_ay[ay];
+    curD=d; renderPeople();
+    const ylab= ay==="all"?"all years":ay;
+    // KPIs
+    $("#kpis").innerHTML=[
+      ["n","acc",nf(d.pubs),"Publications",ay==="all"?"across all years":ylab],
+      ["n","acc",nf(d.cit),"Total citations",d.avg_cit+" avg / paper"],
+      ["n","",d.q1_share+"%","Q1 share",""],
+      ["n","",d.sdg_rate+"%","SDG mapping rate",""],
+      ["n","",d.intl_rate+"%","Int'l co-author rate",""],
+      ["n","",nf(d.partner_countries),"Partner countries",""],
+      ["n","",nf(d.active),"Active authors",d.avg_per_author+" papers / author"],
+      ["n","",nf(d.intl_affils),"Int'l affiliations",""]
+    ].map(k=>`<div class="kpi ${k[1]}"><div class="n">${k[2]}</div><div class="l">${k[3]}</div>${k[4]?`<div class="s">${k[4]}</div>`:""}</div>`).join("");
+    // charts
+    renderCharts(d);
+    // partner institutions
+    $("#afflist").innerHTML=(d.top_affils||[]).map(a=>`<div class="row"><span class="nm">${flag(a[2])}${esc(a[0])}</span><span class="v">${a[1]}</span></div>`).join("")||'<div class="empty">—</div>';
+    $("#ctrylist").innerHTML=(d.top_countries||[]).slice(0,12).map(c=>`<div class="row"><span class="nm">${flag(c[0])}${esc(cname(c[0]))}</span><span class="v">${c[1]}</span></div>`).join("")||'<div class="empty">—</div>';
+    // pubs
+    curLabel=ylab; selPerson=null; $("#pq").value=""; $("#pq").oninput=()=>updatePubs();
+    updatePubs();
+  }
+
+  function updatePubs(){
+    const d=curD; if(!d)return;
+    const q=($("#pq").value||"").toLowerCase();
+    let ps=(d.papers||[]);
+    if(selPerson){ const per=(d.people||[]).find(p=>p.name===selPerson); const S=new Set(per?per.eids:[]); ps=ps.filter(p=>S.has(p.eid)); }
+    if(q) ps=ps.filter(p=>p.t.toLowerCase().includes(q));
+    ps=ps.slice().sort((a,b)=>b.cit-a.cit);
+    $("#pubh").innerHTML= selPerson
+      ? `Publications · <span style="color:var(--accent)">${esc(selPerson)}</span> (${ps.length}) <button id="clrsel" class="clrsel">clear ✕</button>`
+      : `Publications · ${esc(curLabel)} (${ps.length})`;
+    $("#ptb").innerHTML=ps.map(p=>{
+      const url=p.eid?`https://www.scopus.com/record/display.uri?eid=${encodeURIComponent(p.eid)}&origin=resultslist`:"";
+      const qb=p.q?`<span class="qb ${p.q}">${p.q}</span>`:"";
+      const sd=p.sdg&&p.sdg!=="None"?`<span class="sdgb">${esc(p.sdg)}</span>`:"";
+      return`<tr><td class="t">${esc(p.t)}<div class="jr">${flag(p.pc)}${esc(p.j)}</div></td>
+        <td class="c cit">${nf(p.cit)}</td><td class="c">${qb}</td>
+        <td class="c" style="font-size:.72rem;color:var(--ink-2)">${esc(p.ty)}</td>
+        <td class="c">${sd}</td><td class="c" style="color:var(--muted)">${p.na||""}</td>
+        <td class="c">${url?`<a class="lk" href="${url}" target="_blank" rel="noopener" title="Open in Scopus">↗</a>`:""}</td></tr>`;}).join("")
+      ||'<tr><td colspan="7" class="empty">No publications match.</td></tr>';
+    const c=$("#clrsel"); if(c)c.onclick=()=>{selPerson=null;renderPeople();updatePubs();};
+  }
+
+  const PAL=["#5fc4d4","#7fd0da","#3f9fb0","#9fdce2","#2f93a3","#57b9c8","#a6e0e7","#6fb0bb","#c0e9ee","#1d6b78"];
+  const CHARTS={}; let chartInit=false;
+  function mkChart(id,cfg){ const el=document.getElementById(id); if(!el)return; if(CHARTS[id])CHARTS[id].destroy(); CHARTS[id]=new Chart(el,cfg); }
+  const barX={beginAtZero:true,grid:{color:"rgba(255,255,255,.06)"},ticks:{precision:0}};
+  function renderCharts(d){
+    if(typeof Chart==="undefined")return;
+    if(!chartInit){ Chart.defaults.color="#8a949d"; Chart.defaults.font.family="Inter, sans-serif"; Chart.defaults.font.size=11; chartInit=true; }
+    const q=d.quart||{};
+    mkChart("cQuart",{type:"doughnut",data:{labels:["Q1","Q2","Q3","Q4"],datasets:[{data:[q.Q1||0,q.Q2||0,q.Q3||0,q.Q4||0],backgroundColor:["#5fc4d4","#83d2dc","#a6e0e7","#cdeef2"],borderColor:"#0d1115",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:"60%",plugins:{legend:{position:"right",labels:{boxWidth:12,padding:12}}}}});
+    const sdg=Object.entries(d.sdg||{}).filter(([k])=>k&&k!=="nan").sort();
+    mkChart("cSdg",{type:"bar",data:{labels:sdg.map(x=>x[0]),datasets:[{data:sdg.map(x=>x[1]),backgroundColor:"#5fc4d4",borderRadius:4,barThickness:12}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:barX,y:{grid:{display:false}}}}});
+    const roles=Object.entries(d.roles||{}).filter(([k])=>k&&k!=="nan");
+    mkChart("cRole",{type:"doughnut",data:{labels:roles.map(x=>x[0]),datasets:[{data:roles.map(x=>x[1]),backgroundColor:PAL,borderColor:"#0d1115",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:"58%",plugins:{legend:{position:"right",labels:{boxWidth:11,padding:7,font:{size:10}}}}}});
+    const dep=Object.entries(d.depts||{}).filter(([k])=>k&&k!=="nan").slice(0,8);
+    mkChart("cDept",{type:"bar",data:{labels:dep.map(x=>x[0]),datasets:[{data:dep.map(x=>x[1]),backgroundColor:"#3f9fb0",borderRadius:4,barThickness:14}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:barX,y:{grid:{display:false}}}}});
+  }
+  load();
+  </script>
+</body>
+</html>

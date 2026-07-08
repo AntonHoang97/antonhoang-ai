@@ -84,10 +84,13 @@
           <aside class="timeline" data-reveal data-reveal-d="2" aria-label="Career and education timeline">
             <h3 class="timeline__label">Career &amp; Education</h3>
             <ol class="timeline__list">
-              <li class="timeline__item">
-                <span class="timeline__year">2015–2021</span>
-                <p class="timeline__title">Medical Doctor Degree</p>
-                <p class="timeline__org">Hanoi Medical University</p>
+              <li class="timeline__item timeline__item--expandable">
+                <button class="timeline__trigger" aria-expanded="false" aria-controls="cw-panel">
+                  <span class="timeline__year">2015–2021</span>
+                  <span class="timeline__title">Doctor of Medicine</span>
+                  <span class="timeline__org">Hanoi Medical University</span>
+                  <span class="timeline__toggle">View coursework <i aria-hidden="true">+</i></span>
+                </button>
               </li>
               <li class="timeline__item">
                 <span class="timeline__year">2022</span>
@@ -111,6 +114,52 @@
               </li>
             </ol>
           </aside>
+
+          <div class="coursework" id="cw-panel" role="region" aria-label="Academic coursework — Doctor of Medicine">
+            <div class="coursework__inner">
+              <div class="coursework__pad">
+                <p class="coursework__intro">Six years of integrated training at Hanoi Medical University, combining clinical medicine, biomedical sciences, public health, epidemiology, biostatistics, and community-based fieldwork.</p>
+                <div class="cw-groups">
+                  <div class="cw-group">
+                    <h4>Biomedical &amp; pre-clinical foundation</h4>
+                    <ul class="cw-chips">
+                      <li>Human Anatomy</li><li>Histology &amp; Embryology</li><li>Physiology</li><li>Biochemistry</li><li>Medical Biophysics</li><li>Medical Biology</li><li>Microbiology</li><li>Immunology</li><li>Pathology</li><li>Pathophysiology</li><li>Medical Genetics</li><li>Pharmacology</li>
+                    </ul>
+                  </div>
+                  <div class="cw-group">
+                    <h4>Clinical medicine</h4>
+                    <ul class="cw-chips">
+                      <li>Internal Medicine</li><li>Surgery</li><li>Internal Pathology</li><li>Surgical Pathology</li><li>Obstetrics &amp; Gynecology</li><li>Pediatrics</li><li>Infectious Diseases</li><li>Neurology</li><li>Psychiatry</li><li>Traditional Medicine</li><li>Physical Rehabilitation</li><li>Family Medicine</li><li>Radiology</li><li>Dentistry</li><li>Otorhinolaryngology</li><li>Ophthalmology</li><li>Dermatology</li><li>Oncology</li><li>Allergy &amp; Clinical Immunology</li>
+                    </ul>
+                  </div>
+                  <div class="cw-group">
+                    <h4>Public health &amp; community medicine</h4>
+                    <ul class="cw-chips">
+                      <li>Epidemiology</li><li>Health Education &amp; Promotion</li><li>Nutrition &amp; Food Safety</li><li>Reproductive Health</li><li>HIV Prevention</li><li>Occupational Health</li><li>Environmental Science &amp; Health</li><li>Tuberculosis &amp; Lung Disease</li><li>Community-based Fieldwork</li><li>One Health</li><li>Healthcare-associated Infection Control</li>
+                    </ul>
+                  </div>
+                  <div class="cw-group">
+                    <h4>Data, research methods &amp; population health</h4>
+                    <ul class="cw-chips">
+                      <li>Probability &amp; Statistics</li><li>Biostatistics</li><li>Research Methodology</li><li>Anthropology &amp; Sociology of Health</li><li>Introduction to Informatics</li>
+                    </ul>
+                  </div>
+                  <div class="cw-group">
+                    <h4>Health system, management &amp; policy</h4>
+                    <ul class="cw-chips">
+                      <li>Health Organization &amp; Management</li><li>Theory of State &amp; Law</li><li>Medical Psychology &amp; Ethics</li><li>Personal &amp; Professional Development</li><li>Graduate Practical Module</li>
+                    </ul>
+                  </div>
+                  <div class="cw-group">
+                    <h4>Communication, professional &amp; general education</h4>
+                    <ul class="cw-chips">
+                      <li>Communication Skills</li><li>English (I–IV)</li><li>Chemistry</li><li>Physical Education in Medicine</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

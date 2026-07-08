@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CHS · IHS Research Profiles — VinUni</title>
+  <meta name="description" content="Individual research profiles for VinUni College of Health Sciences (CHS) and Innovation in Health Sciences (IHS) — publications, citations, collaboration and impact from Scopus." />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#07090b;--bg-2:#0d1115;--bg-3:#11161b;--ink:#f3f5f6;--ink-2:#c5ccd2;--muted:#8a949d;--faint:#565f68;
+      --line:rgba(255,255,255,.10);--line-2:rgba(255,255,255,.16);--accent:#5fc4d4;--accent-2:#2f93a3;--accent-dim:rgba(95,196,212,.12);
+      --q1:#5fc4d4;--q2:#83d2dc;--q3:#a6e0e7;--q4:#cdeef2;
+      --display:"Outfit",sans-serif;--sans:"Inter",sans-serif;--mono:"JetBrains Mono",monospace;--pad:clamp(1rem,3vw,2.4rem)}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    .mono{font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;font-size:.62rem}
+    .nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:.85rem var(--pad);background:rgba(7,9,11,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+    .nav .brand{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase}
+    .nav .back{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);border:1px solid var(--line-2);padding:.45rem .8rem;border-radius:999px}
+    .nav .back:hover{color:#fff;border-color:var(--accent)}
+    .toggle{display:flex;border:1px solid var(--line-2);border-radius:999px;overflow:hidden}
+    .toggle a{padding:.5rem 1rem;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+    .toggle a.on{background:var(--accent);color:#06222a;font-weight:600}
+    .head{padding:clamp(1.4rem,3vw,2rem) var(--pad) .4rem}
+    .head .tag{display:inline-block;color:var(--accent);border:1px solid var(--accent-2);padding:.3rem .7rem;border-radius:999px;margin-bottom:.8rem}
+    .head h1{font-family:var(--display);font-weight:200;letter-spacing:-.02em;font-size:clamp(1.7rem,4vw,2.6rem)}
+    .head h1 b{font-weight:500;color:var(--accent)}
+    .head p{color:var(--muted);max-width:76ch;margin-top:.5rem;font-size:.85rem}
+    #err{color:#ff9b9b;font-family:var(--mono);font-size:.7rem;padding:.4rem var(--pad);display:none}
+
+    .layout{display:grid;grid-template-columns:1fr 44%;gap:1.1rem;padding:1rem var(--pad) 1.1rem;align-items:stretch}
+    @media(max-width:1000px){.layout{grid-template-columns:1fr}}
+    .card{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+    .toolbar{display:flex;gap:.6rem;align-items:center;padding:.7rem .8rem;border-bottom:1px solid var(--line);flex-wrap:wrap}
+    .toolbar input{flex:1;min-width:150px;background:var(--bg-3);color:var(--ink);border:1px solid var(--line-2);border-radius:9px;padding:.5rem .7rem;font-family:var(--sans)}
+    .seg{display:flex;border:1px solid var(--line-2);border-radius:9px;overflow:hidden}
+    .seg button{background:var(--bg-3);color:var(--ink-2);border:none;padding:.5rem .7rem;font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+    .seg button.on{background:var(--accent);color:#06222a;font-weight:600}
+    .cnt{color:var(--muted)}
+    .tablewrap{overflow:auto;max-height:60vh}
+    table.matrix{border-collapse:separate;border-spacing:0;width:100%;font-size:.8rem}
+    .matrix th,.matrix td{padding:.55rem .55rem;white-space:nowrap;border-bottom:1px solid var(--line)}
+    .matrix thead th{position:sticky;top:0;z-index:3;background:var(--bg-3);color:var(--ink-2);font-family:var(--mono);font-size:.55rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;user-select:none}
+    .matrix th.numh{text-align:center}
+    .matrix th.stick,.matrix td.stick{position:sticky;left:0;z-index:2;background:var(--bg-2);text-align:left;width:190px;min-width:190px;max-width:190px;white-space:normal}
+    .matrix thead th.stick{z-index:4;background:var(--bg-3)}
+    .matrix td.stick .nm{font-weight:500;color:var(--ink);display:block;line-height:1.2}
+    .matrix td.stick .rl{color:var(--muted);font-size:.66rem}
+    .matrix th.tot,.matrix td.tot{position:sticky;left:190px;z-index:2;background:var(--bg-2);text-align:center;border-right:1px solid var(--line-2);width:58px;min-width:58px}
+    .matrix thead th.tot{z-index:4;background:var(--bg-3)}
+    .matrix td.tot b{font-family:var(--mono);color:var(--accent);font-size:.92rem}
+    .matrix td.cell{text-align:center;font-family:var(--mono);color:var(--ink)}
+    .matrix td.cell.z{color:var(--faint)}
+    .matrix tbody tr{cursor:pointer}
+    .matrix tbody tr:hover td{background:rgba(95,196,212,.06)}
+    .matrix tbody tr:hover td.stick,.matrix tbody tr:hover td.tot{background:#131b22}
+    .matrix tbody tr.sel td{background:rgba(95,196,212,.14)!important}
+    .matrix tbody tr.sel td.stick,.matrix tbody tr.sel td.tot{background:#16232b!important}
+    .matrix th.sorted{color:var(--accent)}.arr{opacity:.5;font-size:.7em}
+
+    /* globe hero */
+    .globebox{position:relative;min-height:420px;background:radial-gradient(circle at 62% 42%,#0d1620,#07090b 72%)}
+    #globeViz{position:absolute;inset:0}
+    .goverlay{position:absolute;top:1rem;left:1rem;right:1rem;z-index:5;display:flex;justify-content:space-between;gap:1rem;pointer-events:none}
+    .goverlay .who .mono{color:var(--accent)}
+    .goverlay .who h2{font-family:var(--display);font-weight:300;font-size:1.4rem;max-width:20rem;line-height:1.05}
+    .goverlay .who .rl{color:var(--ink-2);font-size:.78rem;margin-top:.15rem}
+    .scop{pointer-events:auto;display:inline-flex;align-items:center;gap:.4rem;margin-top:.7rem;font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:#06222a;background:var(--accent);border-radius:999px;padding:.45rem .8rem;font-weight:600}
+    .scop:hover{filter:brightness(1.08)}
+    .gtop{pointer-events:auto;text-align:right;background:rgba(13,17,21,.72);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;padding:.55rem .75rem}
+    .gtop .trow{display:flex;justify-content:flex-end;align-items:baseline;gap:.5rem;padding:.05rem 0}
+    .gtop .trow span{color:var(--muted);font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:.05em}
+    .gtop .trow b{font-family:var(--display);font-weight:300;font-size:1.05rem;color:var(--ink)}
+    .gtop .trow.hl b{color:var(--accent)}.gtop .trow.hl span{color:var(--accent)}
+    .gpart{position:absolute;left:1rem;bottom:1rem;z-index:6;max-width:230px;background:rgba(13,17,21,.72);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:10px;padding:.55rem .75rem}
+    .gpart .h{font-family:var(--mono);font-size:.54rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.35rem}
+    .gpart .r{display:flex;justify-content:space-between;gap:.9rem;font-size:.75rem;color:var(--ink-2);padding:.1rem 0}
+    .gpart .r b{font-family:var(--mono);color:var(--accent)}
+    .gpubs{position:absolute;bottom:1rem;right:1rem;z-index:6;background:rgba(13,17,21,.85);backdrop-filter:blur(10px);border:1px solid var(--line-2);border-radius:12px;padding:.65rem .85rem;cursor:pointer;text-align:left;color:var(--ink);min-width:150px}
+    .gpubs:hover{border-color:var(--accent)}
+    .gpubs .t{font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .gpubs .n{font-family:var(--display);font-weight:300;font-size:1.5rem;color:var(--accent);line-height:1.1}
+    .gpubs .go{font-family:var(--mono);font-size:.56rem;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin-top:.15rem}
+    .pv-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:.3s;z-index:80}
+    .pv-bg.open{opacity:1;pointer-events:auto}
+    .pubview{position:fixed;top:0;right:0;height:100%;width:min(650px,96vw);background:var(--bg-2);border-left:1px solid var(--line-2);transform:translateX(100%);transition:transform .35s cubic-bezier(.19,1,.22,1);z-index:81;display:flex;flex-direction:column}
+    .pubview.open{transform:translateX(0)}
+    .pubview>header{padding:1.1rem 1.3rem;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:1rem}
+    .pubview>header h2{font-family:var(--display);font-weight:300;font-size:1.3rem}
+    .pubview .x{background:none;border:1px solid var(--line-2);color:var(--ink-2);border-radius:999px;width:32px;height:32px;cursor:pointer;flex:none}
+    .pvtabs{display:flex;gap:.4rem;overflow-x:auto;padding:.8rem 1.3rem;border-bottom:1px solid var(--line)}
+    .aytab{flex:none;background:var(--bg-3);border:1px solid var(--line);border-radius:10px;padding:.45rem .7rem;cursor:pointer;color:var(--ink-2);text-align:center;min-width:78px}
+    .aytab b{display:block;font-family:var(--mono);font-size:.72rem;color:var(--ink)}
+    .aytab span{font-family:var(--mono);font-size:.54rem;color:var(--muted)}
+    .aytab.on{background:var(--accent);border-color:var(--accent)}.aytab.on b,.aytab.on span{color:#06222a}
+    .pvlist{overflow:auto;padding:.6rem 1.3rem 2.4rem;flex:1}
+    .pvrow{display:flex;justify-content:space-between;gap:.8rem;padding:.6rem .7rem;border-bottom:1px solid var(--line);border-radius:8px}
+    .pvrow.chs{background:rgba(95,196,212,.09);border-left:3px solid var(--accent)}
+    .pvrow .pvt{line-height:1.3;font-size:.84rem;color:var(--ink-2)}
+    .pvrow.chs .pvt{color:#fff}
+    .pvrow .pvmeta{display:flex;align-items:center;gap:.4rem;color:var(--muted);font-size:.72rem;margin-top:.2rem;flex-wrap:wrap}
+    .pvrow .pvmeta img{width:13px;height:13px;border-radius:50%}
+    .pvrow .pvay{font-family:var(--mono)}
+    .pvside{display:flex;align-items:center;gap:.6rem;flex:none}
+    .pvcit{font-family:var(--mono);color:var(--accent);font-size:.82rem}
+
+    /* profile */
+    .profile{padding:0 var(--pad) 3rem;display:flex;flex-direction:column;gap:1.1rem}
+    .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.7rem}
+    .kpi{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:.85rem .95rem}
+    .kpi .n{font-family:var(--display);font-weight:400;font-size:1.5rem}
+    .kpi.acc .n{color:var(--accent)}
+    .kpi .l{color:var(--muted);font-size:.58rem;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;margin-top:.25rem}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.1rem}
+    .chartwrap{position:relative;height:230px}
+    .box{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem}
+    .box h3{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem}
+    .qbar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin-bottom:.7rem;background:var(--bg-3)}
+    .qseg{height:100%}
+    .qleg{display:flex;flex-wrap:wrap;gap:.5rem .9rem;font-size:.72rem;color:var(--ink-2)}
+    .qleg .d{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:.35rem}
+    .row{display:flex;justify-content:space-between;gap:.6rem;padding:.3rem 0;border-bottom:1px solid var(--line);font-size:.8rem}
+    .row .v{font-family:var(--mono);color:var(--accent);white-space:nowrap}
+    .row .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .bars .b{display:flex;align-items:center;gap:.5rem;margin:.3rem 0;font-size:.74rem}
+    .bars .b .lab{width:58px;color:var(--ink-2);font-family:var(--mono);font-size:.62rem}
+    .bars .b .track{flex:1;height:8px;background:var(--bg-3);border-radius:5px;overflow:hidden}
+    .bars .b .fill{height:100%;background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+    .bars .b .v{width:26px;text-align:right;font-family:var(--mono);color:var(--accent);font-size:.68rem}
+
+    /* publications table */
+    .pubs{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+    .pubs .head2{padding:.85rem 1rem;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+    .pubs .head2 h3{font-family:var(--display);font-weight:300;font-size:1.15rem}
+    .pubs input{background:var(--bg-3);color:var(--ink);border:1px solid var(--line-2);border-radius:8px;padding:.45rem .6rem;font-family:var(--sans);min-width:180px}
+    .pwrap{overflow:auto;max-height:70vh}
+    table.pt{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.8rem}
+    table.pt th{position:sticky;top:0;background:var(--bg-3);color:var(--ink-2);font-family:var(--mono);font-size:.55rem;letter-spacing:.06em;text-transform:uppercase;text-align:left;padding:.6rem .55rem;border-bottom:1px solid var(--line);z-index:2}
+    table.pt td{padding:.6rem .55rem;border-bottom:1px solid var(--line);vertical-align:top}
+    table.pt td.t{white-space:normal;line-height:1.3}
+    table.pt td.t .jr{color:var(--muted);font-size:.72rem;margin-top:.15rem;display:flex;align-items:center;gap:.35rem}
+    table.pt td.t .jr img{width:14px;height:14px;border-radius:50%;flex:none}
+    table.pt td.c{text-align:center;font-family:var(--mono);white-space:nowrap}
+    table.pt td.c.cit{color:var(--accent)}
+    .col-t{width:auto}.col-cit{width:64px}.col-q{width:52px}.col-ty{width:96px}.col-sdg{width:78px}.col-ay{width:78px}.col-lk{width:44px}
+    .qb{display:inline-block;font-family:var(--mono);font-size:.58rem;padding:.1rem .34rem;border-radius:4px;border:1px solid var(--line-2);color:var(--muted)}
+    .qb.Q1{color:var(--q1);border-color:rgba(95,196,212,.45)}.qb.Q2{color:var(--q2);border-color:rgba(131,210,220,.4)}
+    .qb.Q3{color:var(--q3);border-color:rgba(166,224,231,.35)}.qb.Q4{color:var(--q4);border-color:rgba(205,238,242,.3)}
+    .sdgb{font-family:var(--mono);font-size:.58rem;color:var(--accent)}
+    .lk{color:var(--accent-2)}.lk:hover{color:var(--accent)}
+    .vpill{font-family:var(--mono);font-size:.5rem;color:var(--accent);border:1px solid var(--accent-2);border-radius:4px;padding:0 .25rem;margin-left:.3rem}
+    .empty{color:var(--faint);padding:2rem;text-align:center}
+  </style>
+</head>
+<body>
+  <nav class="nav"><a class="brand" href="../index.html">Nguyen Viet Hoang</a><div class="toggle"><a href="./index.html" class="on">Individual</a><a href="./chs.html">CHS · IHS</a></div></nav>
+
+  <div class="head">
+    <span class="tag mono">CHS · IHS Research Intelligence</span>
+    <h1>Research <b>Profiles</b></h1>
+    <p>Individual research profiles for members of the College of Health Sciences (CHS) and Innovation in Health Sciences (IHS): Staff, Faculty and Students. Explore each person's publication history, impact and global collaboration, sourced from Scopus and refreshed with every data run.</p>
+    <div id="err"></div>
+  </div>
+
+  <div class="layout">
+    <div class="card">
+      <div class="toolbar">
+        <input id="q" placeholder="Search person…" />
+        <div class="seg"><button id="mH" class="on" data-m="h">H-index</button><button id="mP" data-m="p">Publications</button></div>
+        <span class="cnt mono" id="cnt"></span>
+      </div>
+      <div class="tablewrap"><table class="matrix" id="tbl"><thead id="thead"></thead><tbody id="tbody"></tbody></table></div>
+    </div>
+    <div class="card globebox">
+      <div class="goverlay">
+        <div class="who"><div class="mono">Global collaboration</div><h2 id="gname">—</h2><div class="rl" id="grole"></div><a class="scop" id="scop" target="_blank" rel="noopener">◎ Scopus profile</a></div>
+        <div class="gtop" id="gtot"></div>
+      </div>
+      <div class="gpart" id="gpart"></div>
+      <div id="globeViz"></div>
+      <button class="gpubs" id="gpubs"><div class="t">Publications</div><div class="n" id="gpubsN">0</div><div class="go">View by year →</div></button>
+    </div>
+  </div>
+
+  <div class="profile" id="profile"></div>
+
+  <div class="pv-bg" id="pvbg"></div>
+  <aside class="pubview" id="pubview">
+    <header><h2 id="pvname"></h2><button class="x" id="pvx">✕</button></header>
+    <div class="pvtabs" id="pvtabs"></div>
+    <div class="pvlist" id="pvlist"></div>
+  </aside>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/globe.gl"></script>
+  <script>
+  const GEO_URLS=["https://cdn.jsdelivr.net/gh/vasturiano/globe.gl@master/example/datasets/ne_110m_admin_0_countries.geojson","https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson"];
+  const EARTH="https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-dark.jpg";
+  const PATCH={France:"FR",Norway:"NO",Somaliland:"SO",Kosovo:"XK","N. Cyprus":"CY"};
+  const featIso=f=>{const a=f.properties.ISO_A2;return(a&&a!=="-99")?a:(PATCH[f.properties.ADMIN]||PATCH[f.properties.NAME]||null)};
+  const $=s=>document.querySelector(s), nf=n=>(n==null?"—":Number(n).toLocaleString("en-US"));
+  const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const showErr=m=>{const e=$("#err");e.textContent=m;e.style.display="block";};
+  const QC={Q1:"var(--q1)",Q2:"var(--q2)",Q3:"var(--q3)",Q4:"var(--q4)"};
+
+  let FAC=[],AYS=[],COLLAB={by_faculty:{},all:{}},iso2name={},FEATS=[],world,sel=null;
+  let sortKey="total",sortDir=-1,metric="h",CMAX=1;
+  const stops=[[18,34,51],[47,147,163],[95,196,212],[234,252,255]];
+  const lerp=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+  function color(t){if(t<=0)return"rgba(30,38,46,0.55)";const s=t*(stops.length-1),i=Math.min(stops.length-2,Math.floor(s)),f=s-i;const c=lerp(stops[i],stops[i+1],f);return`rgb(${c[0]},${c[1]},${c[2]})`;}
+  const cellColor=v=>v>0?`rgba(95,196,212,${0.12+0.62*Math.min(1,Math.log(v+1)/Math.log(CMAX+1))})`:"transparent";
+  const cellVal=(f,ay)=> metric==="h"?((f.vh&&f.vh[ay])||0):((f.vp&&f.vp[ay])||0);
+  const totVal=f=> metric==="h"?(f.vin_hindex||0):(f.vin_papers||0);
+  const flag=pc=> pc?`<img src="https://hatscripts.github.io/circle-flags/flags/${pc.toLowerCase()}.svg" loading="lazy" onerror="this.style.display='none'">`:"";
+
+  async function load(){
+    try{const d=await fetch("./data/faculty.json",{cache:"no-store"}).then(r=>r.json());
+      FAC=d.faculty||[];AYS=d.ay_list||[];FAC.forEach((f,i)=>f._i=i);}
+    catch(e){showErr("Could not load ./data/faculty.json");return;}
+    try{COLLAB=await fetch("./data/collab_geo.json",{cache:"no-store"}).then(r=>r.json());}catch(e){}
+    recalcMax();buildHead();renderRows();initGlobe();
+    if(FAC.length)selectFaculty(FAC[0]);
+  }
+  function recalcMax(){CMAX=Math.max(1,...FAC.flatMap(f=>Object.values((metric==="h"?f.vh:f.vp)||{})));}
+
+  function buildHead(){
+    const totlab=metric==="h"?"Total H-index":"Total Pubs";
+    let th=['<th class="stick" data-k="name">Person <span class="arr"></span></th>',
+            `<th class="tot numh" data-k="total">${totlab} <span class="arr"></span></th>`,
+            '<th class="numh" data-k="role">Role</th>'];
+    AYS.slice().reverse().forEach(ay=>th.push(`<th class="numh" data-k="ay:${ay}">${ay.replace("AY","")} <span class="arr"></span></th>`));
+    $("#thead").innerHTML="<tr>"+th.join("")+"</tr>";
+    $("#thead").querySelectorAll("th[data-k]").forEach(el=>el.addEventListener("click",()=>{
+      const k=el.dataset.k;if(sortKey===k)sortDir*=-1;else{sortKey=k;sortDir=(k==="name"||k==="role")?1:-1;}renderRows();}));
+  }
+  const val=(f,k)=> k==="name"?f.name.toLowerCase():k==="role"?(f.role||"").toLowerCase():k==="total"?totVal(f):cellVal(f,k.slice(3));
+  function renderRows(){
+    const q=($("#q").value||"").toLowerCase();
+    let rows=FAC.filter(f=>!q||f.name.toLowerCase().includes(q)||(f.role||"").toLowerCase().includes(q));
+    rows.sort((a,b)=>{const x=val(a,sortKey),y=val(b,sortKey);return x<y?-sortDir:x>y?sortDir:0;});
+    const ayr=AYS.slice().reverse();
+    $("#tbody").innerHTML=rows.map(f=>{
+      const cells=ayr.map(ay=>{const v=cellVal(f,ay);return`<td class="cell ${v?'':'z'}" style="background:${cellColor(v)}">${v||'·'}</td>`;}).join("");
+      return`<tr data-i="${f._i}" class="${sel&&sel._i===f._i?'sel':''}"><td class="stick"><span class="nm">${esc(f.name)}</span><span class="rl">${esc(f.role||'')}</span></td><td class="tot"><b>${totVal(f)}</b></td><td>${esc(f.role||'')}</td>${cells}</tr>`;}).join("");
+    $("#cnt").textContent=rows.length+" people";
+    $("#thead").querySelectorAll("th[data-k]").forEach(el=>{el.classList.toggle("sorted",el.dataset.k===sortKey);const a=el.querySelector(".arr");if(a)a.textContent=el.dataset.k===sortKey?(sortDir<0?"▼":"▲"):"";});
+    $("#tbody").querySelectorAll("tr").forEach(tr=>tr.addEventListener("click",()=>selectFaculty(FAC[+tr.dataset.i])));
+  }
+
+  function scopusUrl(f){
+    const ids=(f.ids||[]).filter(Boolean);
+    if(!ids.length)return"https://www.scopus.com";
+    if(ids.length===1)return"https://www.scopus.com/authid/detail.uri?authorId="+ids[0];
+    const q=ids.map(i=>`AU-ID(${i})`).join(" OR ");
+    return"https://www.scopus.com/results/results.uri?sort=plf-f&src=s&sot=b&sdt=b&sl=0&s="+encodeURIComponent(q);
+  }
+
+  function selectFaculty(f){
+    sel=f;
+    $("#tbody").querySelectorAll("tr").forEach(tr=>tr.classList.toggle("sel",+tr.dataset.i===f._i));
+    $("#gname").textContent=f.name;$("#grole").textContent=f.role||"";
+    $("#scop").href=scopusUrl(f);
+    $("#gtot").innerHTML=`
+      <div class="trow"><span>Publications</span><b>${nf(f.all_papers)}</b></div>
+      <div class="trow"><span>Citations</span><b>${nf(f.all_cit)}</b></div>
+      <div class="trow hl"><span>VinUni pubs</span><b>${nf(f.vin_papers)}</b></div>
+      <div class="trow hl"><span>VinUni cit</span><b>${nf(f.vin_cit)}</b></div>`;
+    const c=(COLLAB.by_faculty||{})[f.name]||{};
+    const top=Object.entries(c).filter(([k])=>k!=="VN").sort((a,b)=>b[1]-a[1]).slice(0,5)
+      .map(([iso,n])=>`<div class="r"><span>${iso2name[iso]||iso}</span><b>${n}</b></div>`).join("");
+    $("#gpart").innerHTML=`<div class="h">Top partner countries</div>${top||'<div style="color:var(--faint)">No international collaboration</div>'}`;
+    $("#gpubsN").textContent=nf(f.all_papers);
+    paintGlobe();
+    renderProfile(f);
+  }
+
+  function bars(obj,order){
+    const ent=order?order.filter(k=>obj[k]).map(k=>[k,obj[k]]):Object.entries(obj).sort((a,b)=>b[1]-a[1]);
+    if(!ent.length)return'<div style="color:var(--faint);font-size:.8rem">No data</div>';
+    const mx=Math.max(...ent.map(e=>e[1]));
+    return'<div class="bars">'+ent.map(([k,v])=>`<div class="b"><span class="lab">${esc(k)}</span><span class="track"><span class="fill" style="width:${100*v/mx}%"></span></span><span class="v">${v}</span></div>`).join("")+'</div>';
+  }
+  function renderProfile(f){
+    const q=f.quart||{},qtot=(q.Q1||0)+(q.Q2||0)+(q.Q3||0)+(q.Q4||0);
+    const qbar=["Q1","Q2","Q3","Q4"].map(k=>q[k]?`<span class="qseg" style="width:${100*q[k]/qtot}%;background:${QC[k]}"></span>`:"").join("");
+    const qleg=["Q1","Q2","Q3","Q4"].map(k=>`<span><span class="d" style="background:${QC[k]}"></span>${k} ${q[k]||0}</span>`).join("");
+    const insts=(f.top_insts||[]).map(([n,v])=>`<div class="row"><span class="nm" title="${esc(n)}">${esc(n)}</span><span class="v">${v}</span></div>`).join("")||'<div class="empty">—</div>';
+    const coas=(f.top_coauth||[]).map(([n,v])=>`<div class="row"><span class="nm" title="${esc(n)}">${esc(n)}</span><span class="v">${v}</span></div>`).join("")||'<div class="empty">—</div>';
+    const sdgOrder=Object.keys(f.sdg||{}).sort();
+    const kpi=(n,l,acc)=>`<div class="kpi ${acc?'acc':''}"><div class="n">${n}</div><div class="l">${l}</div></div>`;
+    const profile=`
+      <div class="kpis">
+        ${kpi(f.vin_hindex||0,"H-index · VinUni",1)}
+        ${kpi(nf(f.vin_papers),"Publications · VinUni",1)}
+        ${kpi(nf(f.vin_cit),"Citations · VinUni",1)}
+        ${kpi(f.avg_cit,"Avg cit / paper")}
+        ${kpi(f.q1_share+"%","Q1 share")}
+        ${kpi(f.intl_rate+"%","Int'l co-author")}
+        ${kpi(f.n_countries,"Partner countries")}
+        ${kpi(f.h_index||0,"H-index · all Scopus")}
+      </div>
+      <div class="cards">
+        <div class="box"><h3>Journal quartiles (VinUni)</h3><div class="chartwrap"><canvas id="pQuart"></canvas></div></div>
+        <div class="box"><h3>Document types</h3><div class="chartwrap"><canvas id="pType"></canvas></div></div>
+        <div class="box"><h3>SDG contribution</h3><div class="chartwrap"><canvas id="pSdg"></canvas></div></div>
+        <div class="box"><h3>Top partner institutions</h3>${insts}</div>
+        <div class="box"><h3>Top co-authors</h3>${coas}</div>
+      </div>`;
+    $("#profile").innerHTML=profile;
+    renderProfileCharts(f);
+  }
+  const PALp=["#5fc4d4","#7fd0da","#3f9fb0","#9fdce2","#2f93a3","#57b9c8","#a6e0e7","#6fb0bb","#c0e9ee","#1d6b78"];
+  const PCH={}; let pchInit=false;
+  function pmk(id,cfg){const el=document.getElementById(id);if(!el)return;if(PCH[id])PCH[id].destroy();PCH[id]=new Chart(el,cfg);}
+  function renderProfileCharts(f){
+    if(typeof Chart==="undefined")return;
+    if(!pchInit){Chart.defaults.color="#8a949d";Chart.defaults.font.family="Inter, sans-serif";Chart.defaults.font.size=11;pchInit=true;}
+    const q=f.quart||{};
+    pmk("pQuart",{type:"doughnut",data:{labels:["Q1","Q2","Q3","Q4"],datasets:[{data:[q.Q1||0,q.Q2||0,q.Q3||0,q.Q4||0],backgroundColor:["#5fc4d4","#83d2dc","#a6e0e7","#cdeef2"],borderColor:"#0d1115",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:"60%",plugins:{legend:{position:"right",labels:{boxWidth:12,padding:10}}}}});
+    const ty=Object.entries(f.types||{}).filter(([k])=>k&&k!=="nan");
+    pmk("pType",{type:"doughnut",data:{labels:ty.map(x=>x[0]),datasets:[{data:ty.map(x=>x[1]),backgroundColor:PALp,borderColor:"#0d1115",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:"58%",plugins:{legend:{position:"right",labels:{boxWidth:11,padding:6,font:{size:10}}}}}});
+    const sd=Object.entries(f.sdg||{}).filter(([k])=>k&&k!=="nan").sort();
+    pmk("pSdg",{type:"bar",data:{labels:sd.map(x=>x[0]),datasets:[{data:sd.map(x=>x[1]),backgroundColor:"#5fc4d4",borderRadius:4,barThickness:12}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:"rgba(255,255,255,.06)"},ticks:{precision:0}},y:{grid:{display:false}}}}});
+  }
+
+  /* publications viewer opened from the globe corner, tabbed by academic year.
+     Papers recorded as CHS (VinUni) are highlighted; others are plain rows. */
+  let PVF=null, PVAY="all";
+  function openPubView(f){ PVF=f; PVAY="all"; $("#pvname").textContent=f.name; buildAyTabs(f); renderPvList(); $("#pubview").classList.add("open"); $("#pvbg").classList.add("open"); }
+  function closePubView(){ $("#pubview").classList.remove("open"); $("#pvbg").classList.remove("open"); }
+  function buildAyTabs(f){
+    let h=`<button class="aytab ${PVAY==='all'?'on':''}" data-ay="all"><b>All</b><span>${nf(f.all_papers)}p · ${nf(f.all_cit)}c</span></button>`;
+    h+=(f.by_ay||[]).map(a=>`<button class="aytab ${PVAY===a.ay?'on':''}" data-ay="${a.ay}"><b>${a.ay.replace('AY','')}</b><span>${nf(a.papers)}p · ${nf(a.cit)}c</span></button>`).join("");
+    $("#pvtabs").innerHTML=h;
+    $("#pvtabs").querySelectorAll(".aytab").forEach(b=>b.addEventListener("click",()=>{PVAY=b.dataset.ay;$("#pvtabs").querySelectorAll(".aytab").forEach(x=>x.classList.toggle("on",x===b));renderPvList();}));
+  }
+  function renderPvList(){
+    const f=PVF; let ps=(f.papers||[]);
+    if(PVAY!=="all") ps=ps.filter(p=>p.ay===PVAY);
+    ps=ps.slice().sort((a,b)=>b.cit-a.cit);
+    $("#pvlist").innerHTML=ps.map(p=>{
+      const url=p.eid?`https://www.scopus.com/record/display.uri?eid=${encodeURIComponent(p.eid)}&origin=resultslist`:"";
+      const qb=p.q?`<span class="qb ${p.q}">${p.q}</span>`:"";
+      return`<div class="pvrow ${p.v?'chs':''}"><div class="pvmain"><div class="pvt">${esc(p.t)}${p.v?'<span class="vpill">CHS</span>':''}</div>
+        <div class="pvmeta">${flag(p.pc)}<span>${esc(p.j)}</span> ${qb} <span class="pvay">${esc(p.ay)}</span></div></div>
+        <div class="pvside"><span class="pvcit">${nf(p.cit)}</span>${url?`<a class="lk" href="${url}" target="_blank" rel="noopener" title="Open in Scopus">↗</a>`:''}</div></div>`;}).join("")
+      ||'<div class="empty">No publications.</div>';
+  }
+
+  /* globe */
+  async function initGlobe(){
+    if(typeof Globe==="undefined"){showErr("globe.gl did not load (CDN blocked?).");return;}
+    const el=$("#globeViz");
+    world=Globe()(el).globeImageUrl(EARTH).backgroundColor("rgba(0,0,0,0)").showAtmosphere(true).atmosphereColor("#5fc4d4").atmosphereAltitude(0.16).width(el.clientWidth).height(el.clientHeight);
+    world.controls().autoRotate=true;world.controls().autoRotateSpeed=0.5;world.pointOfView({lat:16,lng:100,altitude:2.4});
+    const size=()=>{world.width(el.clientWidth);world.height(el.clientHeight);};addEventListener("resize",size);
+    try{const geo=await fetchFirst(GEO_URLS);FEATS=geo.features.filter(f=>f.properties.ADMIN!=="Antarctica");
+      FEATS.forEach(f=>{const i=featIso(f);if(i)iso2name[i]=f.properties.ADMIN||f.properties.NAME;});
+      world.polygonsData(FEATS).polygonSideColor(()=>"rgba(95,196,212,0.08)").polygonStrokeColor(()=>"rgba(255,255,255,0.16)");
+      paintGlobe();if(sel)selectFaculty(sel);}catch(e){showErr("Country map failed to load from CDN.");}
+  }
+  async function fetchFirst(urls){for(const u of urls){try{const r=await fetch(u);if(r.ok)return await r.json();}catch(e){}}throw new Error("no geo");}
+  function paintGlobe(){
+    if(!world||!FEATS.length||!sel)return;
+    const c=(COLLAB.by_faculty||{})[sel.name]||{};const max=Math.max(1,...Object.values(c)),lm=Math.log(max+1);
+    world.polygonCapColor(f=>{const v=c[featIso(f)]||0;return color(Math.log(v+1)/lm);})
+         .polygonAltitude(f=>{const v=c[featIso(f)]||0;return v?0.01+0.11*(Math.log(v+1)/lm):0.006;})
+         .polygonLabel(f=>{const v=c[featIso(f)]||0;const nm=f.properties.ADMIN||f.properties.NAME;return`<div style="font-family:sans-serif;background:#0d1115;color:#fff;padding:5px 8px;border-radius:7px;border:1px solid #2f93a3"><b>${nm}</b><br>${v} co-authored paper${v===1?"":"s"}</div>`;});
+  }
+
+  // metric toggle
+  document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{
+    metric=b.dataset.m;document.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b));
+    if(sortKey==="total"||sortKey.startsWith("ay:")){} recalcMax();buildHead();renderRows();
+  }));
+  $("#q").addEventListener("input",renderRows);
+  $("#gpubs").addEventListener("click",()=>{if(sel)openPubView(sel);});
+  $("#pvx").addEventListener("click",closePubView);
+  $("#pvbg").addEventListener("click",closePubView);
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closePubView();});
+  load();
+  </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Collaboration Globe — CHS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--bg:#07090b;--bg-2:#0d1115;--bg-3:#11161b;--ink:#f3f5f6;--ink-2:#c5ccd2;--muted:#8a949d;
+      --line:rgba(255,255,255,.10);--line-2:rgba(255,255,255,.16);--accent:#5fc4d4;--accent-2:#2f93a3;
+      --display:"Outfit",sans-serif;--sans:"Inter",sans-serif;--mono:"JetBrains Mono",monospace}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:radial-gradient(circle at 60% 40%,#0d1620,#07090b 70%);color:var(--ink);font-family:var(--sans);overflow:hidden}
+    #globeViz{position:fixed;inset:0}
+    .panel{position:fixed;top:1.4rem;left:1.4rem;z-index:10;background:rgba(13,17,21,.82);
+      backdrop-filter:blur(12px);border:1px solid var(--line-2);border-radius:14px;padding:1.1rem 1.2rem;width:min(330px,88vw)}
+    .panel h1{font-family:var(--display);font-weight:300;font-size:1.25rem}
+    .panel .mono{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+    select{width:100%;margin-top:.8rem;background:var(--bg-3);color:var(--ink);border:1px solid var(--line-2);
+      border-radius:9px;padding:.6rem .7rem;font-family:var(--sans);font-size:.85rem}
+    .legend{margin-top:.9rem;font-size:.72rem;color:var(--muted)}
+    .bar{height:9px;border-radius:5px;margin:.35rem 0;background:linear-gradient(90deg,#123,#2f93a3,#5fc4d4,#eafcff)}
+    .top{margin-top:.9rem;font-size:.78rem}
+    .top .row{display:flex;justify-content:space-between;padding:.2rem 0;border-bottom:1px solid var(--line)}
+    .top .row span:last-child{font-family:var(--mono);color:var(--accent)}
+    .back{position:fixed;top:1.4rem;right:1.4rem;z-index:10;font-family:var(--mono);font-size:.66rem;
+      letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);border:1px solid var(--line-2);
+      padding:.5rem .85rem;border-radius:999px;background:rgba(13,17,21,.7)}
+    .back:hover{color:#fff;border-color:var(--accent)}
+    .hint{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);z-index:10;color:var(--muted);
+      font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase}
+    #err{position:fixed;bottom:2.4rem;left:50%;transform:translateX(-50%);z-index:20;color:#ff9b9b;
+      font-family:var(--mono);font-size:.72rem;background:rgba(40,10,10,.7);border:1px solid rgba(255,120,120,.4);
+      padding:.5rem .8rem;border-radius:8px;display:none;max-width:80vw;text-align:center}
+    a{color:inherit;text-decoration:none}
+  </style>
+</head>
+<body>
+  <div id="globeViz"></div>
+  <a class="back" href="./index.html">← Faculty table</a>
+  <div class="panel">
+    <div class="mono">Collaboration Globe</div>
+    <h1 id="who">All faculty</h1>
+    <select id="sel"></select>
+    <div class="legend">Colour intensity = distinct co-authored papers with that country (log scale).</div>
+    <div class="bar"></div>
+    <div class="legend"><span style="float:left">less</span><span style="float:right">more</span></div>
+    <div class="top" id="top"></div>
+  </div>
+  <div class="hint">Drag to spin · scroll to zoom</div>
+  <div id="err"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/globe.gl"></script>
+  <script>
+  const GEO_URLS = [
+    "https://cdn.jsdelivr.net/gh/vasturiano/globe.gl@master/example/datasets/ne_110m_admin_0_countries.geojson",
+    "https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson"
+  ];
+  const EARTH = "https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-dark.jpg";
+  const PATCH = {France:"FR",Norway:"NO",Somaliland:"SO",Kosovo:"XK","N. Cyprus":"CY"};
+  const featIso = f => { const a=f.properties.ISO_A2; return (a&&a!=="-99")?a:(PATCH[f.properties.ADMIN]||PATCH[f.properties.NAME]||null); };
+  const iso2name = {};
+
+  const $ = s=>document.querySelector(s);
+  const showErr = m => { const e=$("#err"); e.textContent=m; e.style.display="block"; };
+  let DATA={by_faculty:{},all:{}}, FEATS=[], world;
+
+  const lerp=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+  const stops=[[18,34,51],[47,147,163],[95,196,212],[234,252,255]];
+  function color(t){
+    if(t<=0) return "rgba(30,38,46,0.55)";
+    const s=t*(stops.length-1), i=Math.min(stops.length-2,Math.floor(s)), f=s-i;
+    const c=lerp(stops[i],stops[i+1],f); return `rgb(${c[0]},${c[1]},${c[2]})`;
+  }
+  function counts(){ const k=$("#sel").value; return k==="__all__"?DATA.all:(DATA.by_faculty[k]||{}); }
+
+  function populate(){
+    const names=Object.keys(DATA.by_faculty).sort();
+    $("#sel").innerHTML = `<option value="__all__">All faculty (combined)</option>` +
+      names.map(n=>`<option value="${n.replace(/"/g,'&quot;')}">${n}</option>`).join("");
+    $("#sel").addEventListener("change",()=>{ $("#who").textContent = $("#sel").value==="__all__"?"All faculty":$("#sel").value; paint(); });
+  }
+
+  function paint(){
+    const c=counts();
+    // top list works even without the map
+    const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,6)
+      .map(([iso,n])=>`<div class="row"><span>${iso2name[iso]||iso}</span><span>${n}</span></div>`).join("");
+    $("#top").innerHTML = top;
+    if(!world || !FEATS.length) return;
+    const max=Math.max(1,...Object.values(c)), lmax=Math.log(max+1);
+    world.polygonCapColor(f=>{ const v=c[featIso(f)]||0; return color(Math.log(v+1)/lmax); })
+         .polygonAltitude(f=>{ const v=c[featIso(f)]||0; return v? 0.01+0.12*(Math.log(v+1)/lmax):0.006; })
+         .polygonLabel(f=>{ const v=c[featIso(f)]||0; const nm=f.properties.ADMIN||f.properties.NAME;
+            return `<div style="font-family:sans-serif;background:#0d1115;color:#fff;padding:6px 9px;border-radius:8px;border:1px solid #2f93a3"><b>${nm}</b><br>${v} co-authored paper${v===1?"":"s"}</div>`; });
+  }
+
+  async function fetchFirst(urls){
+    for(const u of urls){ try{ const r=await fetch(u); if(r.ok) return await r.json(); }catch(e){} }
+    throw new Error("all sources failed");
+  }
+
+  async function boot(){
+    if(typeof Globe==="undefined"){ showErr("globe.gl library did not load (CDN blocked by network/extension?)."); return; }
+
+    // 1) globe first — visible immediately even if data/map are slow
+    world = Globe()(document.getElementById("globeViz"))
+      .globeImageUrl(EARTH)
+      .backgroundColor("rgba(0,0,0,0)")
+      .showAtmosphere(true).atmosphereColor("#5fc4d4").atmosphereAltitude(0.18);
+    world.controls().autoRotate=true; world.controls().autoRotateSpeed=0.55;
+    world.pointOfView({lat:16,lng:100,altitude:2.4});
+    addEventListener("resize",()=>{ world.width(innerWidth); world.height(innerHeight); });
+
+    // 2) collaboration data (non-fatal)
+    try{ DATA = await fetch("./data/collab_geo.json",{cache:"no-store"}).then(r=>{ if(!r.ok) throw 0; return r.json(); }); }
+    catch(e){ showErr("Could not load ./data/collab_geo.json — check the file is deployed."); }
+    populate(); paint();
+
+    // 3) country map (non-fatal)
+    try{
+      const geo = await fetchFirst(GEO_URLS);
+      FEATS = geo.features.filter(f=>f.properties.ADMIN!=="Antarctica");
+      FEATS.forEach(f=>{ const i=featIso(f); if(i) iso2name[i]=f.properties.ADMIN||f.properties.NAME; });
+      world.polygonsData(FEATS)
+        .polygonSideColor(()=> "rgba(95,196,212,0.08)")
+        .polygonStrokeColor(()=> "rgba(255,255,255,0.18)");
+      paint();
+    }catch(e){ showErr("Country map failed to load from CDN — globe shows without country shading."); }
+  }
+  boot();
+  </script>
+</body>
+</html>
