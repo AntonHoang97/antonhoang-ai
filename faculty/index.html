@@ -107,11 +107,6 @@
 
     /* profile */
     .profile{padding:0 var(--pad) 3rem;display:flex;flex-direction:column;gap:1.1rem}
-    .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.7rem}
-    .kpi{background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:.85rem .95rem}
-    .kpi .n{font-family:var(--display);font-weight:400;font-size:1.5rem}
-    .kpi.acc .n{color:var(--accent)}
-    .kpi .l{color:var(--muted);font-size:.58rem;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;margin-top:.25rem}
     .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.1rem}
     .chartwrap{position:relative;height:230px}
     .box{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem}
@@ -167,7 +162,6 @@
     <div class="card">
       <div class="toolbar">
         <input id="q" placeholder="Search person…" />
-        <div class="seg"><button id="mH" class="on" data-m="h">H-index</button><button id="mP" data-m="p">Publications</button></div>
         <span class="cnt mono" id="cnt"></span>
       </div>
       <div class="tablewrap"><table class="matrix" id="tbl"><thead id="thead"></thead><tbody id="tbody"></tbody></table></div>
@@ -192,7 +186,6 @@
     <div class="pvlist" id="pvlist"></div>
   </aside>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/globe.gl"></script>
   <script>
   const GEO_URLS=["https://cdn.jsdelivr.net/gh/vasturiano/globe.gl@master/example/datasets/ne_110m_admin_0_countries.geojson","https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson"];
@@ -205,13 +198,13 @@
   const QC={Q1:"var(--q1)",Q2:"var(--q2)",Q3:"var(--q3)",Q4:"var(--q4)"};
 
   let FAC=[],AYS=[],COLLAB={by_faculty:{},all:{}},iso2name={},FEATS=[],world,sel=null;
-  let sortKey="total",sortDir=-1,metric="h",CMAX=1;
+  let sortKey="total",sortDir=-1,CMAX=1;
   const stops=[[18,34,51],[47,147,163],[95,196,212],[234,252,255]];
   const lerp=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
   function color(t){if(t<=0)return"rgba(30,38,46,0.55)";const s=t*(stops.length-1),i=Math.min(stops.length-2,Math.floor(s)),f=s-i;const c=lerp(stops[i],stops[i+1],f);return`rgb(${c[0]},${c[1]},${c[2]})`;}
   const cellColor=v=>v>0?`rgba(95,196,212,${0.12+0.62*Math.min(1,Math.log(v+1)/Math.log(CMAX+1))})`:"transparent";
-  const cellVal=(f,ay)=> metric==="h"?((f.vh&&f.vh[ay])||0):((f.vp&&f.vp[ay])||0);
-  const totVal=f=> metric==="h"?(f.vin_hindex||0):(f.vin_papers||0);
+  const cellVal=(f,ay)=> (f.vp&&f.vp[ay])||0;
+  const totVal=f=> f.vin_papers||0;
   const flag=pc=> pc?`<img src="https://hatscripts.github.io/circle-flags/flags/${pc.toLowerCase()}.svg" loading="lazy" onerror="this.style.display='none'">`:"";
 
   async function load(){
@@ -222,10 +215,10 @@
     recalcMax();buildHead();renderRows();initGlobe();
     if(FAC.length)selectFaculty(FAC[0]);
   }
-  function recalcMax(){CMAX=Math.max(1,...FAC.flatMap(f=>Object.values((metric==="h"?f.vh:f.vp)||{})));}
+  function recalcMax(){CMAX=Math.max(1,...FAC.flatMap(f=>Object.values(f.vp||{})));}
 
   function buildHead(){
-    const totlab=metric==="h"?"Total H-index":"Total Pubs";
+    const totlab="Pubs";
     let th=['<th class="stick" data-k="name">Person <span class="arr"></span></th>',
             `<th class="tot numh" data-k="total">${totlab} <span class="arr"></span></th>`,
             '<th class="numh" data-k="role">Role</th>'];
@@ -263,6 +256,7 @@
     $("#scop").href=scopusUrl(f);
     $("#gtot").innerHTML=`
       <div class="trow"><span>Publications</span><b>${nf(f.all_papers)}</b></div>
+      <div class="trow"><span>H-index</span><b>${nf(f.h_index)}</b></div>
       <div class="trow"><span>Citations</span><b>${nf(f.all_cit)}</b></div>
       <div class="trow hl"><span>VinUni pubs</span><b>${nf(f.vin_papers)}</b></div>
       <div class="trow hl"><span>VinUni cit</span><b>${nf(f.vin_cit)}</b></div>`;
@@ -287,41 +281,18 @@
     const qleg=["Q1","Q2","Q3","Q4"].map(k=>`<span><span class="d" style="background:${QC[k]}"></span>${k} ${q[k]||0}</span>`).join("");
     const insts=(f.top_insts||[]).map(([n,v])=>`<div class="row"><span class="nm" title="${esc(n)}">${esc(n)}</span><span class="v">${v}</span></div>`).join("")||'<div class="empty">—</div>';
     const coas=(f.top_coauth||[]).map(([n,v])=>`<div class="row"><span class="nm" title="${esc(n)}">${esc(n)}</span><span class="v">${v}</span></div>`).join("")||'<div class="empty">—</div>';
-    const sdgOrder=Object.keys(f.sdg||{}).sort();
-    const kpi=(n,l,acc)=>`<div class="kpi ${acc?'acc':''}"><div class="n">${n}</div><div class="l">${l}</div></div>`;
+    const types=(f.types?Object.entries(f.types):[]).filter(([k])=>k&&k!=="nan").sort((a,b)=>b[1]-a[1])
+      .map(([n,v])=>`<div class="row"><span class="nm">${esc(n)}</span><span class="v">${v}</span></div>`).join("")||'<div class="empty">—</div>';
+    const sdg=Object.fromEntries(Object.entries(f.sdg||{}).filter(([k])=>k&&k!=="nan"));
     const profile=`
-      <div class="kpis">
-        ${kpi(f.vin_hindex||0,"H-index · VinUni",1)}
-        ${kpi(nf(f.vin_papers),"Publications · VinUni",1)}
-        ${kpi(nf(f.vin_cit),"Citations · VinUni",1)}
-        ${kpi(f.avg_cit,"Avg cit / paper")}
-        ${kpi(f.q1_share+"%","Q1 share")}
-        ${kpi(f.intl_rate+"%","Int'l co-author")}
-        ${kpi(f.n_countries,"Partner countries")}
-        ${kpi(f.h_index||0,"H-index · all Scopus")}
-      </div>
       <div class="cards">
-        <div class="box"><h3>Journal quartiles (VinUni)</h3><div class="chartwrap"><canvas id="pQuart"></canvas></div></div>
-        <div class="box"><h3>Document types</h3><div class="chartwrap"><canvas id="pType"></canvas></div></div>
-        <div class="box"><h3>SDG contribution</h3><div class="chartwrap"><canvas id="pSdg"></canvas></div></div>
+        <div class="box"><h3>Journal quartiles</h3><div class="qbar">${qbar||'<span class="qseg" style="width:100%;background:var(--bg-3)"></span>'}</div><div class="qleg">${qleg}</div></div>
+        <div class="box"><h3>Document types</h3>${types}</div>
+        <div class="box"><h3>SDG contribution</h3>${bars(sdg)}</div>
         <div class="box"><h3>Top partner institutions</h3>${insts}</div>
         <div class="box"><h3>Top co-authors</h3>${coas}</div>
       </div>`;
     $("#profile").innerHTML=profile;
-    renderProfileCharts(f);
-  }
-  const PALp=["#5fc4d4","#7fd0da","#3f9fb0","#9fdce2","#2f93a3","#57b9c8","#a6e0e7","#6fb0bb","#c0e9ee","#1d6b78"];
-  const PCH={}; let pchInit=false;
-  function pmk(id,cfg){const el=document.getElementById(id);if(!el)return;if(PCH[id])PCH[id].destroy();PCH[id]=new Chart(el,cfg);}
-  function renderProfileCharts(f){
-    if(typeof Chart==="undefined")return;
-    if(!pchInit){Chart.defaults.color="#8a949d";Chart.defaults.font.family="Inter, sans-serif";Chart.defaults.font.size=11;pchInit=true;}
-    const q=f.quart||{};
-    pmk("pQuart",{type:"doughnut",data:{labels:["Q1","Q2","Q3","Q4"],datasets:[{data:[q.Q1||0,q.Q2||0,q.Q3||0,q.Q4||0],backgroundColor:["#5fc4d4","#83d2dc","#a6e0e7","#cdeef2"],borderColor:"#0d1115",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:"60%",plugins:{legend:{position:"right",labels:{boxWidth:12,padding:10}}}}});
-    const ty=Object.entries(f.types||{}).filter(([k])=>k&&k!=="nan");
-    pmk("pType",{type:"doughnut",data:{labels:ty.map(x=>x[0]),datasets:[{data:ty.map(x=>x[1]),backgroundColor:PALp,borderColor:"#0d1115",borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,cutout:"58%",plugins:{legend:{position:"right",labels:{boxWidth:11,padding:6,font:{size:10}}}}}});
-    const sd=Object.entries(f.sdg||{}).filter(([k])=>k&&k!=="nan").sort();
-    pmk("pSdg",{type:"bar",data:{labels:sd.map(x=>x[0]),datasets:[{data:sd.map(x=>x[1]),backgroundColor:"#5fc4d4",borderRadius:4,barThickness:12}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:"rgba(255,255,255,.06)"},ticks:{precision:0}},y:{grid:{display:false}}}}});
   }
 
   /* publications viewer opened from the globe corner, tabbed by academic year.
@@ -369,11 +340,6 @@
          .polygonLabel(f=>{const v=c[featIso(f)]||0;const nm=f.properties.ADMIN||f.properties.NAME;return`<div style="font-family:sans-serif;background:#0d1115;color:#fff;padding:5px 8px;border-radius:7px;border:1px solid #2f93a3"><b>${nm}</b><br>${v} co-authored paper${v===1?"":"s"}</div>`;});
   }
 
-  // metric toggle
-  document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{
-    metric=b.dataset.m;document.querySelectorAll(".seg button").forEach(x=>x.classList.toggle("on",x===b));
-    if(sortKey==="total"||sortKey.startsWith("ay:")){} recalcMax();buildHead();renderRows();
-  }));
   $("#q").addEventListener("input",renderRows);
   $("#gpubs").addEventListener("click",()=>{if(sel)openPubView(sel);});
   $("#pvx").addEventListener("click",closePubView);
