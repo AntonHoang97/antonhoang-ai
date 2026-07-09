@@ -279,8 +279,6 @@
     const q=f.quart||{},qtot=(q.Q1||0)+(q.Q2||0)+(q.Q3||0)+(q.Q4||0);
     const qbar=["Q1","Q2","Q3","Q4"].map(k=>q[k]?`<span class="qseg" style="width:${100*q[k]/qtot}%;background:${QC[k]}"></span>`:"").join("");
     const qleg=["Q1","Q2","Q3","Q4"].map(k=>`<span><span class="d" style="background:${QC[k]}"></span>${k} ${q[k]||0}</span>`).join("");
-    const insts=(f.top_insts||[]).map(([n,v])=>`<div class="row"><span class="nm" title="${esc(n)}">${esc(n)}</span><span class="v">${v}</span></div>`).join("")||'<div class="empty">—</div>';
-    const coas=(f.top_coauth||[]).map(([n,v])=>`<div class="row"><span class="nm" title="${esc(n)}">${esc(n)}</span><span class="v">${v}</span></div>`).join("")||'<div class="empty">—</div>';
     const types=(f.types?Object.entries(f.types):[]).filter(([k])=>k&&k!=="nan").sort((a,b)=>b[1]-a[1])
       .map(([n,v])=>`<div class="row"><span class="nm">${esc(n)}</span><span class="v">${v}</span></div>`).join("")||'<div class="empty">—</div>';
     const sdg=Object.fromEntries(Object.entries(f.sdg||{}).filter(([k])=>k&&k!=="nan"));
@@ -289,8 +287,6 @@
         <div class="box"><h3>Journal quartiles</h3><div class="qbar">${qbar||'<span class="qseg" style="width:100%;background:var(--bg-3)"></span>'}</div><div class="qleg">${qleg}</div></div>
         <div class="box"><h3>Document types</h3>${types}</div>
         <div class="box"><h3>SDG contribution</h3>${bars(sdg)}</div>
-        <div class="box"><h3>Top partner institutions</h3>${insts}</div>
-        <div class="box"><h3>Top co-authors</h3>${coas}</div>
       </div>`;
     $("#profile").innerHTML=profile;
   }
