@@ -1,9 +1,51 @@
 /* ============================================================
    Nguyen Viet Hoang — Phase 2 interactions
-   Publications sourced from public/assets/research/papers/papers-metadata.md
+   Publications follow the master publication list (14 international papers, checked against Crossref by DOI)
    ============================================================ */
 
 const PUBLICATIONS = [
+  {
+    title: "Spatiotemporal dynamics of water quality in the lower Mekong Basin: a decadal multi-parameter analysis (2011-2020)",
+    year: 2026, journal: "Total Environment Advances", category: "Environmental Data Science", role: "Co-first author: software, data curation, visualisation",
+    featured: true,
+    desc: "A decade of Mekong River Commission monitoring at 24 stations in four countries: spatial patterns, seasonal cycles and long-term trends across 18 water-quality indicators.",
+    links: { Publisher: "https://doi.org/10.1016/j.teadva.2026.200184", DOI: "https://doi.org/10.1016/j.teadva.2026.200184", "Companion site": "https://antonhoang97.github.io/lower-mekong-water-quality/" }
+  },
+  {
+    title: "Outcomes of modified single trocar laparoscopic catheter placement for maintenance peritoneal dialysis in children",
+    year: 2026, journal: "Pediatric Nephrology", category: "Paediatric Surgery & Diagnostic Imaging", role: "Co-author",
+    featured: false,
+    desc: "Outcomes of a modified single-trocar laparoscopic technique for placing peritoneal dialysis catheters in children.",
+    links: { Publisher: "https://link.springer.com/article/10.1007/s00467-026-07590-2", DOI: "https://doi.org/10.1007/s00467-026-07590-2" }
+  },
+  {
+    title: "Surgical and functional outcomes of pediatric pancreatic solid pseudopapillary neoplasm: a retrospective study",
+    year: 2026, journal: "PLOS One", category: "Paediatric Surgery & Diagnostic Imaging", role: "Co-author",
+    featured: false,
+    desc: "A retrospective study of surgical and functional outcomes in children operated for solid pseudopapillary neoplasm of the pancreas.",
+    links: { Publisher: "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0357019", DOI: "https://doi.org/10.1371/journal.pone.0357019" }
+  },
+  {
+    title: "Stakeholder perceptions of virtual healthcare in Vietnam: qualitative content analysis of doctors, patients, and medical students",
+    year: 2026, journal: "BMC Medical Education", category: "Medical Education & Career Development", role: "Co-author",
+    featured: false,
+    desc: "A qualitative content analysis of how doctors, patients and medical students in Vietnam see virtual healthcare.",
+    links: { Publisher: "https://link.springer.com/article/10.1186/s12909-026-10166-1", DOI: "https://doi.org/10.1186/s12909-026-10166-1" }
+  },
+  {
+    title: "Breaking stereotypes or making compromises? Gender, income, and the unequal landscape of medical specialty choice",
+    year: 2026, journal: "BMC Medical Education", category: "Medical Education & Career Development", role: "Co-author",
+    featured: false,
+    desc: "How gender and expected income shape the specialty choices of medical students.",
+    links: { Publisher: "https://link.springer.com/article/10.1186/s12909-026-09797-1", DOI: "https://doi.org/10.1186/s12909-026-09797-1" }
+  },
+  {
+    title: "Divergent immune profiles in distinct populations: a Vietnamese-German comparison",
+    year: 2024, journal: "Brain, Behavior, & Immunity - Integrative", category: "Immunology & Sepsis", role: "Co-author",
+    featured: false,
+    desc: "A comparison of immune-cell and cytokine profiles between healthy Vietnamese and German adults.",
+    links: { Publisher: "https://doi.org/10.1016/j.bbii.2024.100083", DOI: "https://doi.org/10.1016/j.bbii.2024.100083" }
+  },
   {
     title: "A comprehensive analysis of the immune system in healthy Vietnamese people",
     year: 2024, journal: "Heliyon", category: "Immunology & Sepsis", role: "Co-author",
@@ -182,6 +224,118 @@ window.addEventListener("resize", () => {
     });
   }, 150);
 });
+
+/* ---------- VCMS charts: drawn from the tables in the page (the table is the source) ---------- */
+const fmt = n => n.toLocaleString("en-US");
+const tip = document.createElement("div");
+tip.className = "viz-tip";
+tip.setAttribute("role", "status");
+const tipValue = document.createElement("b");
+const tipLabel = document.createElement("span");
+tip.append(tipValue, tipLabel);
+document.body.appendChild(tip);
+
+function showTip(anchor, value, label) {
+  tipValue.textContent = value;
+  tipLabel.textContent = label;
+  tip.classList.add("on");
+  const r = anchor.getBoundingClientRect();
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = r.left + r.width / 2 - w / 2;
+  let y = r.top - h - 10;
+  x = Math.max(8, Math.min(x, window.innerWidth - w - 8));
+  if (y < 8) y = r.bottom + 10;
+  tip.style.left = x + "px";
+  tip.style.top = y + "px";
+}
+const hideTip = () => tip.classList.remove("on");
+window.addEventListener("scroll", hideTip, { passive: true });
+
+function bindTip(target, anchor, value, label) {
+  target.tabIndex = 0;
+  target.addEventListener("pointerenter", () => showTip(anchor, value, label));
+  target.addEventListener("pointerleave", hideTip);
+  target.addEventListener("focus", () => showTip(anchor, value, label));
+  target.addEventListener("blur", hideTip);
+}
+
+function tableRows(id) {
+  return Array.from(document.querySelectorAll(`#${id} tbody tr`)).map(tr => ({
+    label: tr.cells[0].textContent.trim(),
+    value: Number(tr.cells[1].textContent.replace(/[^0-9.]/g, "")),
+    sub: tr.dataset.sub || "",
+    note: tr.dataset.note || ""
+  }));
+}
+
+function drawColumns(hostId, tableId) {
+  const host = document.getElementById(hostId);
+  if (!host) return;
+  const rows = tableRows(tableId);
+  const max = Math.max(...rows.map(r => r.value));
+  const plot = document.createElement("div");
+  plot.className = "cols__plot";
+  const axis = document.createElement("div");
+  axis.className = "cols__axis";
+  axis.setAttribute("aria-hidden", "true");
+  rows.forEach(r => {
+    const col = document.createElement("div");
+    col.className = "col";
+    col.setAttribute("role", "listitem");
+    col.setAttribute("aria-label", `${r.label}: ${fmt(r.value)} cases`);
+    const val = document.createElement("span");
+    val.className = "col__val";
+    val.textContent = fmt(r.value);
+    const bar = document.createElement("span");
+    bar.className = "col__bar";
+    bar.style.height = (r.value / max * 82) + "%";
+    col.append(val, bar);
+    bindTip(col, val, `${fmt(r.value)} cases`, r.note || `received in ${r.label}`);
+    plot.appendChild(col);
+    const x = document.createElement("span");
+    x.textContent = r.label;
+    if (r.sub) {
+      const small = document.createElement("small");
+      small.textContent = r.sub;
+      x.appendChild(small);
+    }
+    axis.appendChild(x);
+  });
+  host.append(plot, axis);
+}
+
+function drawBars(hostId, tableId) {
+  const host = document.getElementById(hostId);
+  if (!host) return;
+  const rows = tableRows(tableId);
+  const max = Math.max(...rows.map(r => r.value));
+  const total = Number(host.dataset.total) || 0;
+  rows.forEach(r => {
+    const row = document.createElement("div");
+    row.className = "hbar";
+    row.setAttribute("role", "listitem");
+    row.setAttribute("aria-label", `${r.label}: ${fmt(r.value)} cases`);
+    const label = document.createElement("span");
+    label.className = "hbar__label";
+    label.textContent = r.label;
+    const track = document.createElement("span");
+    track.className = "hbar__track";
+    const bar = document.createElement("span");
+    bar.className = "hbar__bar";
+    bar.style.width = `calc((100% - 3.6rem) * ${(r.value / max).toFixed(4)})`;
+    const val = document.createElement("span");
+    val.className = "hbar__val";
+    val.textContent = fmt(r.value);
+    track.append(bar, val);
+    row.append(label, track);
+    const share = total ? `, ${Math.max(1, Math.round(r.value / total * 100))}% of ${fmt(total)} cases` : "";
+    bindTip(row, val, `${fmt(r.value)} cases`, r.label + share);
+    host.appendChild(row);
+  });
+}
+
+drawColumns("vcmsYears", "vcmsYearsData");
+drawBars("vcmsProducts", "vcmsProductsData");
 
 /* ---------- Year ---------- */
 document.getElementById("year").textContent = new Date().getFullYear();

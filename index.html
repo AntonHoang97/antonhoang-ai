@@ -4,7 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nguyen Viet Hoang — Biostatistics, Healthcare Data Science & 3D Medical Technology</title>
-  <meta name="description" content="Nguyen Viet Hoang — MD · Biostatistics · Healthcare Data Science. Clinician and researcher working across biostatistics, healthcare data science, clinical research analytics, research intelligence, dashboards, and 3D technology in medicine." />
+  <meta name="description" content="Nguyen Viet Hoang — MD · Biostatistics · Healthcare Data Science. Clinician building operations, quality and data systems for personalized 3D-printed medical devices, with research in biostatistics and healthcare data science." />
+  <link rel="canonical" href="https://antonhoang97.github.io/antonhoang-ai/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Nguyen Viet Hoang, MD, MBA" />
+  <meta property="og:description" content="Clinician building operations, quality and data systems for personalized 3D-printed medical devices. Biostatistics and healthcare data science." />
+  <meta property="og:url" content="https://antonhoang97.github.io/antonhoang-ai/" />
+  <meta property="og:image" content="https://antonhoang97.github.io/antonhoang-ai/public/assets/profile/portrait-main.jpg" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -14,11 +20,12 @@
     <a href="#top" class="nav__brand">Nguyen Viet Hoang</a>
     <div class="nav__menu" id="menu">
       <a href="#intro">Profile</a>
+      <a href="#work">Work</a>
+      <a href="#credentials">Credentials</a>
       <a href="#research">Research</a>
       <a href="#publications">Publications</a>
-      <a href="#work">Work</a>
       <a href="#contact">Contact</a>
-      <a href="public/assets/profile/Nguyen_Viet_Hoang_PhD_CV.docx" class="nav__cta" download>CV ↓</a>
+      <a href="public/assets/profile/Nguyen_Viet_Hoang_CV.pdf" class="nav__cta" target="_blank" rel="noopener">CV ↓</a>
     </div>
     <button class="nav__toggle" id="toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
@@ -63,7 +70,7 @@
   <!-- ================= MARQUEE ================= -->
   <div class="marquee" aria-hidden="true">
     <div class="marquee__track" id="marquee">
-      <span>Biostatistics</span><span>Healthcare Data Science</span><span>Clinical Research Analytics</span><span>Research Intelligence</span><span>Dashboard Systems</span><span>3D Technology in Medicine</span><span>Patient-specific Medical Technology</span>
+      <span>Medical Device Operations</span><span>Quality Systems</span><span>Healthcare Data Science</span><span>Biostatistics</span><span>Clinical Research Analytics</span><span>Dashboard Systems</span><span>3D Technology in Medicine</span>
     </div>
   </div>
 
@@ -76,8 +83,8 @@
           <div class="intro__statement">
             <h2 data-reveal data-reveal-d="1">A clinician building <span class="accent">research, data and medical technology</span> systems.</h2>
             <div class="body">
-              <p data-reveal data-reveal-d="2">Trained as a medical doctor at Hanoi Medical University, I work at the interface of clinical medicine, data science, and healthcare technology implementation — at VinUniversity and Vinmec.</p>
-              <p data-reveal data-reveal-d="3">My work spans biostatistics and clinical research analytics, reproducible data pipelines, institutional research intelligence and dashboards, and clinical-engineering workflows for personalized 3D medical technology.</p>
+              <p data-reveal data-reveal-d="2">Trained as a medical doctor at Hanoi Medical University, I run operations, quality and data systems for personalized 3D-printed medical devices at VinUniversity's Institute of 3D Technology in Medicine, working with surgeons at 18 hospitals.</p>
+              <p data-reveal data-reveal-d="3">Around that work I build the software and the evidence: a case management system covering more than 1,300 clinical cases, a quality system certified to ISO 13485, national standards for medical 3D printing, and the reproducible analysis behind peer-reviewed publications.</p>
             </div>
           </div>
 
@@ -99,18 +106,23 @@
               </li>
               <li class="timeline__item">
                 <span class="timeline__year">2025</span>
-                <p class="timeline__title">MBA Foundation Cohort, Full Industry Scholarship</p>
+                <p class="timeline__title">MBA, Founding Cohort, Full Industry Scholarship</p>
                 <p class="timeline__org">VinUniversity</p>
               </li>
               <li class="timeline__item">
                 <span class="timeline__year">2025</span>
                 <p class="timeline__title">Chief of Office</p>
-                <p class="timeline__org">Vietnam 3D Technology in Medicine Association</p>
+                <p class="timeline__org">Vietnam Association of 3D Technology in Medicine</p>
               </li>
               <li class="timeline__item">
                 <span class="timeline__year">2026</span>
-                <p class="timeline__title">Director of Product Development & Operations Office</p>
-                <p class="timeline__org">VinUniversity Institute of 3D Technology in Medicine</p>
+                <p class="timeline__title">Operations Manager</p>
+                <p class="timeline__org">Institute of 3D Technology in Medicine, VinUniversity</p>
+              </li>
+              <li class="timeline__item">
+                <span class="timeline__year">2026</span>
+                <p class="timeline__title">Member, National Standards (TCVN) Drafting Team</p>
+                <p class="timeline__org">Ministry of Health</p>
               </li>
             </ol>
           </aside>
@@ -160,6 +172,206 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WORK / PROJECTS ================= -->
+    <section class="section section--alt" id="work">
+      <div class="shell">
+        <div class="sec-head" data-reveal>
+          <span class="sec-head__label label">Selected work</span>
+          <h2>Systems, platforms<br />&amp; applied projects</h2>
+          <p>The systems I have built and run: operations software, a certified quality system, data analysis and dashboards.</p>
+        </div>
+
+        <div class="projects">
+          <!-- Project 01 -->
+          <article class="project" data-reveal>
+            <div class="project__top">
+              <span class="project__idx">01</span>
+              <h3 class="project__title">VCMS</h3>
+              <span class="project__tag">Case management system / in use since 2022</span>
+            </div>
+            <p class="project__lead">VCMS runs the medical 3D printing service of VinUniversity's Institute of 3D Technology in Medicine. I designed and built it end to end: one traceable record for every clinical case, from the surgeon's request through imaging, design, polymer and metal printing, QA/QC and delivery, with inventory, costing, contracts and an executive dashboard on top. It digitised the workflow end to end, and it is the data source for the lab's research.
+              <span class="meta-inline"><span>FastAPI</span><span>PostgreSQL</span><span>JavaScript, no framework</span><span>Docker, self-hosted</span><span>Traceability</span><span>Role-based access</span></span>
+            </p>
+
+            <div class="figs" role="list" aria-label="VCMS in numbers">
+              <div class="fig fig--lead" role="listitem"><span class="fig__value">1,384</span><span class="fig__label">clinical cases managed since March 2022</span></div>
+              <div class="fig" role="listitem"><span class="fig__value">18</span><span class="fig__label">hospitals served</span></div>
+              <div class="fig" role="listitem"><span class="fig__value">10</span><span class="fig__label">provinces and cities</span></div>
+              <div class="fig" role="listitem"><span class="fig__value">1,011</span><span class="fig__label">print runs logged</span></div>
+            </div>
+
+            <div class="viz">
+              <section class="viz__card" aria-labelledby="vizYearsTitle">
+                <h4 class="viz__title" id="vizYearsTitle">Cases received per year</h4>
+                <p class="viz__sub">By date of receipt. 2026 runs to 6 November.</p>
+                <div class="cols" id="vcmsYears" role="list" aria-labelledby="vizYearsTitle"></div>
+                <details class="viz__table">
+                  <summary>View as table</summary>
+                  <table id="vcmsYearsData">
+                    <thead><tr><th scope="col">Year</th><th scope="col">Cases received</th></tr></thead>
+                    <tbody>
+                      <tr data-note="received from 26 March 2022"><td>2022</td><td>79</td></tr>
+                      <tr><td>2023</td><td>253</td></tr>
+                      <tr><td>2024</td><td>301</td></tr>
+                      <tr><td>2025</td><td>358</td></tr>
+                      <tr data-sub="to 6 Nov" data-note="received from 1 January to 6 November 2026"><td>2026</td><td>376</td></tr>
+                    </tbody>
+                  </table>
+                </details>
+              </section>
+              <section class="viz__card" aria-labelledby="vizProductsTitle">
+                <h4 class="viz__title" id="vizProductsTitle">What the cases delivered</h4>
+                <p class="viz__sub">Cases by product type. One case can include several products.</p>
+                <div class="hbars" id="vcmsProducts" role="list" aria-labelledby="vizProductsTitle" data-total="1384"></div>
+                <details class="viz__table">
+                  <summary>View as table</summary>
+                  <table id="vcmsProductsData">
+                    <thead><tr><th scope="col">Product type</th><th scope="col">Cases</th></tr></thead>
+                    <tbody>
+                      <tr><td>Patient-specific surgical guides</td><td>704</td></tr>
+                      <tr><td>Anatomical models</td><td>599</td></tr>
+                      <tr><td>Cranial implant molds</td><td>415</td></tr>
+                      <tr><td>Personalized implants</td><td>65</td></tr>
+                      <tr><td>Digital surgical plans</td><td>42</td></tr>
+                      <tr><td>Bone cement molds, bolus</td><td>10</td></tr>
+                    </tbody>
+                  </table>
+                </details>
+              </section>
+            </div>
+            <p class="viz__note">Figures from the VCMS executive dashboard, anonymised extract of 7 November 2026. The live system holds patient data, so no screens are shown here. The total includes 17 cases without a receipt date and 158 early cases without a recorded product type.</p>
+          </article>
+
+          <!-- Project 02 -->
+          <article class="project" data-reveal>
+            <div class="project__top">
+              <span class="project__idx">02</span>
+              <h3 class="project__title">3D Technology in Medicine</h3>
+              <span class="project__tag">Quality, regulatory, clinical engineering / VinUniversity, Vinmec</span>
+            </div>
+            <p class="project__lead">As operations and ISO lead I built the quality management system behind the service, certified to ISO 9001:2015 and ISO 13485:2016, with design controls, risk management, traceability and CAPA. I took the personalized surgical guide to a Class B medical device declaration, drafted in-house standards for five product lines, and coordinate the drafting of national standards (TCVN) for medical 3D printing with the Ministry of Health. The clinical side covers surgical planning with surgeons, patient-specific guides, anatomical models and customized titanium implants.
+              <span class="meta-inline"><span>ISO 13485</span><span>ISO 9001</span><span>Class B medical device</span><span>TCVN national standards</span><span>Titanium implants</span><span>Patient-specific instruments</span><span>CT / MRI / CBCT</span></span>
+            </p>
+            <div class="frames layout-2">
+              <figure class="frame frame__h"><img src="public/assets/work/3d-lab/titanium-implant.jpg" alt="Titanium implant" /><figcaption><span>Patient-specific titanium implant</span><span>3D Lab</span></figcaption></figure>
+              <figure class="frame frame__h"><img src="public/assets/work/3d-lab/PSI-polymer.jpg" alt="Patient-specific polymer instrument" /><figcaption><span>Polymer surgical guide</span><span>3D Lab</span></figcaption></figure>
+            </div>
+          </article>
+
+          <!-- Project 03 -->
+          <article class="project" data-reveal>
+            <div class="project__top">
+              <span class="project__idx">03</span>
+              <h3 class="project__title">Lower Mekong Water Quality</h3>
+              <span class="project__tag">Data analysis, interactive site / R, Shiny, JavaScript</span>
+            </div>
+            <p class="project__lead">Ten years of Mekong River Commission monitoring, 2011 to 2020: 42,858 observations from 24 stations in four countries, across 18 indicators. I am co-first author of the article in Total Environment Advances (2026) and did its software, data curation and visualisation. The analysis covers Mann-Kendall trends with Sen's slope, seasonal clustering and principal component analysis. I then built the companion site, where every figure of the article is recomputed in R from the monitoring record and the build stops if a number differs from the printed one.
+              <span class="meta-inline"><span>R</span><span>Mann-Kendall, Sen's slope</span><span>PCA, clustering</span><span>Shiny</span><span>Leaflet</span><span>SVG charts, no library</span><span>Reproducible build</span></span>
+            </p>
+            <div class="linkrow project__links">
+              <a href="https://antonhoang97.github.io/lower-mekong-water-quality/" target="_blank" rel="noopener">Open the site</a>
+              <a href="https://hoangnvvinuni.shinyapps.io/Mekong_Water_Quality_Dashboard/" target="_blank" rel="noopener">Shiny dashboard</a>
+              <a href="https://doi.org/10.1016/j.teadva.2026.200184" target="_blank" rel="noopener">Article</a>
+              <a href="https://github.com/AntonHoang97/lower-mekong-water-quality" target="_blank" rel="noopener">Code and figures</a>
+            </div>
+            <div class="frames">
+              <figure class="frame span2 frame--wide"><a href="https://antonhoang97.github.io/lower-mekong-water-quality/" target="_blank" rel="noopener"><img src="public/assets/work/mekong/mekong-basin-stations.jpg" alt="Satellite view of the Lower Mekong Basin with its river network and the 24 monitoring stations of the study" /></a><figcaption><span>The basin and its 24 monitoring stations</span><span>Interactive map</span></figcaption></figure>
+              <figure class="frame span2 frame--figure"><a href="https://antonhoang97.github.io/lower-mekong-water-quality/#explore" target="_blank" rel="noopener"><img src="public/assets/work/mekong/annual-trend.svg" alt="Total suspended solids in Laos, Thailand, Cambodia and Vietnam: median and interquartile range of every year, 2011 to 2020" /></a><figcaption><span>Total suspended solids by country, median and interquartile range per year</span><span>Drawn in R</span></figcaption></figure>
+              <figure class="frame span2 frame--figure"><a href="https://antonhoang97.github.io/lower-mekong-water-quality/#results" target="_blank" rel="noopener"><img src="public/assets/work/mekong/relative-level.svg" alt="Heat map of four countries by 18 indicators: the median of each country against the mean of the four" /></a><figcaption><span>Where each country sits across 18 indicators</span><span>Fig. 1 of the article</span></figcaption></figure>
+            </div>
+          </article>
+
+          <!-- Project 04 -->
+          <article class="project" data-reveal>
+            <div class="project__top">
+              <span class="project__idx">04</span>
+              <h3 class="project__title">Research Intelligence</h3>
+              <span class="project__tag">Publication analytics / R, Power BI</span>
+            </div>
+            <p class="project__lead">A modular research-intelligence pipeline that crawls, enriches and classifies institutional publication data from Scopus, Crossref, OpenAlex, PubMed and SJR — powering author mapping, quartile analytics, collaboration maps and reproducible reporting dashboards.
+              <span class="meta-inline"><span>R</span><span>Scopus / OpenAlex API</span><span>Crossref · PubMed</span><span>SJR · text2sdg</span><span>Power BI</span></span>
+            </p>
+            <div class="frames layout-feature">
+              <figure class="frame frame--screenshot frame__h span2"><img src="public/assets/work/research-intelligence/chs-dashboard-overview.png" alt="Research intelligence dashboard overview" /><figcaption><span>Institutional dashboard overview</span><span>Power BI</span></figcaption></figure>
+              <figure class="frame frame--screenshot frame__h"><img src="public/assets/work/research-intelligence/publication-tracking.png" alt="Publication tracking" /><figcaption><span>Publication tracking</span><span>Bibliometrics</span></figcaption></figure>
+              <figure class="frame frame--screenshot frame__h"><img src="public/assets/work/research-intelligence/profile-faculties-overview.png" alt="Faculty profiles" /><figcaption><span>Faculty research profiles</span><span>Analytics</span></figcaption></figure>
+              <figure class="frame frame--screenshot frame__h"><img src="public/assets/work/research-intelligence/conference-overview.png" alt="Conference overview" /><figcaption><span>Conference outputs</span><span>Reporting</span></figcaption></figure>
+              <figure class="frame frame--screenshot frame__h"><img src="public/assets/work/research-intelligence/MOU-tracking.png" alt="Partnership tracking" /><figcaption><span>Partnership / MOU tracking</span><span>Strategy</span></figcaption></figure>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CREDENTIALS ================= -->
+    <section class="section" id="credentials">
+      <div class="shell">
+        <div class="sec-head" data-reveal>
+          <span class="sec-head__label label">Credentials</span>
+          <h2>Degrees, standards<br />&amp; certificates</h2>
+          <p>The training and appointments behind the quality, regulatory and 3D work.</p>
+        </div>
+
+        <ul class="cred-list" data-reveal>
+          <li class="cred">
+            <span class="cred__yr">2026</span>
+            <p class="cred__title">Member, National Standards (TCVN) Drafting Team</p>
+            <p class="cred__org">Institute of Medical Equipment and Health Works (Viện Trang thiết bị và Công trình y tế), Ministry of Health. Appointed by Decision No. 177/QĐ-VTTB, 10 April 2026.</p>
+          </li>
+          <li class="cred">
+            <span class="cred__yr">2025 to 2026</span>
+            <p class="cred__title">Master of Business Administration</p>
+            <p class="cred__org">VinUniversity. Founding cohort, full industry scholarship.</p>
+          </li>
+          <li class="cred">
+            <span class="cred__yr">2025</span>
+            <p class="cred__title">Head, Technical Subcommittee on Standards</p>
+            <p class="cred__org">Vietnam Association of 3D Technology in Medicine. Nine draft national standards submitted to the Ministry of Health, eleven more in progress.</p>
+          </li>
+          <li class="cred">
+            <span class="cred__yr">2022 to now</span>
+            <p class="cred__title">ISO Lead</p>
+            <p class="cred__org">3D Technology in Medicine Center, VinUniversity. Quality management system certified to ISO 9001:2015 and ISO 13485:2016.</p>
+          </li>
+          <li class="cred">
+            <span class="cred__yr">2015 to 2021</span>
+            <p class="cred__title">Doctor of Medicine</p>
+            <p class="cred__org">Hanoi Medical University. Graduation thesis scored 9.8/10.</p>
+          </li>
+        </ul>
+
+        <div class="certs" data-reveal data-reveal-d="1">
+          <a class="cert" href="public/assets/profile/certificates/nttf-iso-9001-14001-45001-2022.pdf" target="_blank" rel="noopener">
+            <span class="cert__frame"><img src="public/assets/profile/certificates/nttf-iso-9001-14001-45001-2022.jpg" alt="Competency certificate from Nettur Technical Training Foundation" loading="lazy" /></span>
+            <span class="cert__body">
+              <span class="cert__yr">May 2022</span>
+              <span class="cert__title">Implementing ISO 9001 (QMS), ISO 14001 and ISO 45001 for a 3D Printing Centre</span>
+              <span class="cert__org">Nettur Technical Training Foundation (NTTF), Bangalore, India. 48 hours, Competency Certificate No. 4084.</span>
+              <span class="cert__link">View certificate, PDF</span>
+            </span>
+          </a>
+          <a class="cert" href="public/assets/profile/certificates/sheba-3d-surgical-planning-2023.pdf" target="_blank" rel="noopener">
+            <span class="cert__frame"><img src="public/assets/profile/certificates/sheba-3d-surgical-planning-2023.jpg" alt="Certificate from Sheba Medical Center" loading="lazy" /></span>
+            <span class="cert__body">
+              <span class="cert__yr">July 2023</span>
+              <span class="cert__title">3D Technology in Surgical Planning and Preparation</span>
+              <span class="cert__org">Sheba Medical Center, Tel HaShomer, Israel, at the PlanNeT surgical 3D planning center.</span>
+              <span class="cert__link">View certificate, PDF</span>
+            </span>
+          </a>
+          <a class="cert" href="public/assets/profile/certificates/stratasys-polyjet-saf-2025.pdf" target="_blank" rel="noopener">
+            <span class="cert__frame"><img src="public/assets/profile/certificates/stratasys-polyjet-saf-2025.jpg" alt="Certificate of achievement from Stratasys Academy" loading="lazy" /></span>
+            <span class="cert__body">
+              <span class="cert__yr">July 2025</span>
+              <span class="cert__title">Stratasys Medical Training: PolyJet and SAF</span>
+              <span class="cert__org">Stratasys Academy, Stratasys GmbH.</span>
+              <span class="cert__link">View certificate, PDF</span>
+            </span>
+          </a>
         </div>
       </div>
     </section>
@@ -227,7 +439,7 @@
         <div class="sec-head" data-reveal>
           <span class="sec-head__label label">Selected outputs</span>
           <h2>Peer-reviewed<br />publications</h2>
-          <p>Co-authored research across immunology &amp; sepsis, orthopaedics &amp; 3D technology, paediatric diagnostics, and medical education.</p>
+          <p>Fourteen international peer-reviewed papers across environmental data science, immunology &amp; sepsis, orthopaedics &amp; 3D technology, paediatric surgery, and medical education.</p>
         </div>
 
         <div class="pubs__filters" id="pubFilters" data-reveal></div>
@@ -242,70 +454,6 @@
       </div>
     </section>
 
-    <!-- ================= WORK / PROJECTS ================= -->
-    <section class="section section--alt" id="work">
-      <div class="shell">
-        <div class="sec-head" data-reveal>
-          <span class="sec-head__label label">Selected work</span>
-          <h2>Systems, platforms<br />&amp; applied projects</h2>
-          <p>Beyond publications — the workflows, dashboards and medical technology I build and operate.</p>
-        </div>
-
-        <div class="projects">
-          <!-- Project 01 -->
-          <article class="project" data-reveal>
-            <div class="project__top">
-              <span class="project__idx">01</span>
-              <h3 class="project__title">3D Technology in Medicine</h3>
-              <span class="project__tag">Clinical Engineering · VinUniversity / Vinmec</span>
-            </div>
-            <p class="project__lead">Building and managing clinical-engineering workflows for personalized anatomical models, surgical planning, patient-specific guides, and customized implants — with QA/QC documentation and full traceability from imaging to clinical deployment.
-              <span class="meta-inline"><span>Titanium implants</span><span>Patient-specific instruments</span><span>CT / MRI / CBCT</span><span>QA / QC</span></span>
-            </p>
-            <div class="frames layout-2">
-              <figure class="frame frame__h"><img src="public/assets/work/3d-lab/titanium-implant.jpg" alt="Titanium implant" /><figcaption><span>Patient-specific titanium implant</span><span>3D Lab</span></figcaption></figure>
-              <figure class="frame frame__h"><img src="public/assets/work/3d-lab/PSI-polymer.jpg" alt="Patient-specific polymer instrument" /><figcaption><span>Polymer surgical guide</span><span>3D Lab</span></figcaption></figure>
-            </div>
-          </article>
-
-          <!-- Project 02 -->
-          <article class="project" data-reveal>
-            <div class="project__top">
-              <span class="project__idx">02</span>
-              <h3 class="project__title">Research Intelligence</h3>
-              <span class="project__tag">Publication Analytics · R / Power BI</span>
-            </div>
-            <p class="project__lead">A modular research-intelligence pipeline that crawls, enriches and classifies institutional publication data from Scopus, Crossref, OpenAlex, PubMed and SJR — powering author mapping, quartile analytics, collaboration maps and reproducible reporting dashboards.
-              <span class="meta-inline"><span>R</span><span>Scopus / OpenAlex API</span><span>Crossref · PubMed</span><span>SJR · text2sdg</span><span>Power BI</span></span>
-            </p>
-            <div class="frames layout-feature">
-              <figure class="frame frame--screenshot frame__h span2"><img src="public/assets/work/research-intelligence/chs-dashboard-overview.png" alt="Research intelligence dashboard overview" /><figcaption><span>Institutional dashboard overview</span><span>Power BI</span></figcaption></figure>
-              <figure class="frame frame--screenshot frame__h"><img src="public/assets/work/research-intelligence/publication-tracking.png" alt="Publication tracking" /><figcaption><span>Publication tracking</span><span>Bibliometrics</span></figcaption></figure>
-              <figure class="frame frame--screenshot frame__h"><img src="public/assets/work/research-intelligence/profile-faculties-overview.png" alt="Faculty profiles" /><figcaption><span>Faculty research profiles</span><span>Analytics</span></figcaption></figure>
-              <figure class="frame frame--screenshot frame__h"><img src="public/assets/work/research-intelligence/conference-overview.png" alt="Conference overview" /><figcaption><span>Conference outputs</span><span>Reporting</span></figcaption></figure>
-              <figure class="frame frame--screenshot frame__h"><img src="public/assets/work/research-intelligence/MOU-tracking.png" alt="Partnership tracking" /><figcaption><span>Partnership / MOU tracking</span><span>Strategy</span></figcaption></figure>
-            </div>
-          </article>
-
-          <!-- Project 03 -->
-          <article class="project" data-reveal>
-            <div class="project__top">
-              <span class="project__idx">03</span>
-              <h3 class="project__title">Shiny Apps &amp; Dashboards</h3>
-              <span class="project__tag">Interactive Reporting · R / Shiny</span>
-            </div>
-            <p class="project__lead">Interactive R/Shiny applications for environmental and health data monitoring — turning raw datasets into accessible, decision-ready visual reporting.
-              <span class="meta-inline"><span>R / Shiny</span><span>Interactive visualization</span><span>Monitoring</span><span>Reporting</span></span>
-            </p>
-            <div class="frames layout-2">
-              <figure class="frame frame--screenshot frame__h"><img src="public/assets/work/shiny-apps/mekong-dashboard.png" alt="Mekong dashboard" /><figcaption><span>Mekong monitoring dashboard</span><span>R / Shiny</span></figcaption></figure>
-              <figure class="frame frame--screenshot frame__h"><img src="public/assets/work/shiny-apps/nhatrang-dashboard.png" alt="Nha Trang dashboard" /><figcaption><span>Nha Trang monitoring dashboard</span><span>R / Shiny</span></figcaption></figure>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
     <!-- ================= CONTACT ================= -->
     <section class="section contact" id="contact">
       <div class="shell">
@@ -316,19 +464,20 @@
             <h5>Email</h5>
             <a href="mailto:nguyenviethoang1219@gmail.com">nguyenviethoang1219@gmail.com</a>
             <h5 style="margin-top:1.4rem;">For</h5>
-            <p>PhD supervision · research collaboration · healthcare technology · teaching &amp; resources</p>
+            <p>Medical technology leadership, research collaboration, PhD supervision, teaching &amp; resources</p>
           </div>
           <div class="contact__actions">
             <a href="mailto:nguyenviethoang1219@gmail.com" class="btn btn--solid">Email me</a>
-            <a href="public/assets/profile/Nguyen_Viet_Hoang_PhD_CV.docx" class="btn btn--ghost" download>Download CV</a>
+            <a href="public/assets/profile/Nguyen_Viet_Hoang_CV.pdf" class="btn btn--ghost" download="Nguyen_Viet_Hoang_CV.pdf">Download CV</a>
           </div>
         </div>
         <div class="footer">
           <p>© <span id="year"></span> Nguyen Viet Hoang · MD · Biostatistics · Healthcare Data Science</p>
           <div class="footer__links">
+            <a href="#work">Work</a>
+            <a href="#credentials">Credentials</a>
             <a href="#research">Research</a>
             <a href="#publications">Publications</a>
-            <a href="#work">Work</a>
           </div>
         </div>
       </div>
